@@ -1,4 +1,6 @@
 import requests
-import beautifulsoup4
-r = requests.get('https://coinmarketcap.com/currencies/bitcoin/historical-data/?start=20130429&end=20200604')
-print(r.status_code)
+from bs4 import BeautifulSoup
+page = requests.get('https://coinmarketcap.com/currencies/bitcoin/historical-data/?start=20110428&end=20200606')
+print(page)
+soup = BeautifulSoup(page.content, 'html.parser')
+print(soup.prettify())

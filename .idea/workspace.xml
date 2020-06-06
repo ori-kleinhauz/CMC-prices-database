@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8125e102-1776-49fd-b7d6-0c5cc243b413" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Data Mining Project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Data Mining Project.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
     </list>
@@ -86,6 +83,13 @@
       <option name="presentableId" value="Default" />
       <updated>1591270587525</updated>
     </task>
+    <task id="LOCAL‎00001" summary="added beautifulsoup4 - parse the responses">
+      <created>1591470246847</created>
+      <option name="number" value="LOCAL‎00001" />
+      <option name="presentableId" value="LOCAL‎00001" />
+      <updated>1591470246847</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -93,11 +97,17 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="added beautifulsoup4 - parse the responses" />
+    <option name="LAST_COMMIT_MESSAGE" value="added beautifulsoup4 - parse the responses" />
   </component>
   <component name="WindowStateProjectService">
     <state width="1515" height="210" key="GridCell.Tab.0.bottom" timestamp="1591270765615">
