@@ -89,7 +89,13 @@
       <option name="presentableId" value="LOCAL‎00001" />
       <updated>1591470246847</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL‎00002" summary="print HTML content">
+      <created>1591477817961</created>
+      <option name="number" value="LOCAL‎00002" />
+      <option name="presentableId" value="LOCAL‎00002" />
+      <updated>1591477817961</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -107,7 +113,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="added beautifulsoup4 - parse the responses" />
-    <option name="LAST_COMMIT_MESSAGE" value="added beautifulsoup4 - parse the responses" />
+    <MESSAGE value="print HTML content" />
+    <option name="LAST_COMMIT_MESSAGE" value="print HTML content" />
   </component>
   <component name="WindowStateProjectService">
     <state width="1515" height="210" key="GridCell.Tab.0.bottom" timestamp="1591270765615">
