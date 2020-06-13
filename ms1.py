@@ -4,9 +4,13 @@ import pickle
 import datetime
 from datetime import datetime
 import pandas as pd
+import re
+from pathlib import Path
 MOST_TRADED_CRYPTOS = 'https://trading-education.com/top-100-cryptocurrencies-on-coinmarketcap-in-one-sentence'
 
 
+############################
+# methods dedicated for downloading data and prepare it for analysis
 def get_100_currencies():
     page_get = requests.get(MOST_TRADED_CRYPTOS)
     soup = BeautifulSoup(page_get.content, 'html.parser')
@@ -49,58 +53,72 @@ def load_coin_from_file(coin):
     page_get = pickle.load(infile)
     infile.close()
     return page_get
+############################
 
 
-def experiments(page, coin):
-    """this is a general function where we can try out anything.."""
+############################
+# methods for Creating dataframes for each coin and placing all in one dictionary of {COIN : DATAFRAME}'s
+def create_soup(coin):
+    page = load_coin_from_file(coin)
     soup = BeautifulSoup(page.content, 'html.parser')
-    # print(soup.prettify())
-    # (soup.prettify())
+    return soup
 
-    date_dirty = soup.find_all(class_= "cmc-table__cell cmc-table__cell--sticky cmc-table__cell--left")
-    test_dirty = [str(date_dirty[i]) for i in range(len(date_dirty))]
-    # print(soup.prettify())
-    end = test_dirty[0].index('</div></td>')
-    test_clean = [t[end - 12:end] for t in test_dirty]
-    datetime_obj = []
-    alsotest = datetime.strptime(test_clean[0], '%b %d, %Y').date()
-    datetime_obj = [datetime.strptime(t, '%b %d, %Y').date() for t in test_clean]
-    val_dirty = soup.find_all(class_="cmc-table__cell cmc-table__cell--right")
-    val_str = [str(val_dirty[i]) for i in range(len(val_dirty))]
-    # values_dirty = soup.find_all(class = "cmc-table__cell cmc-table__cell--right")
-    vals_split = [v.split('>') for v in val_str]
-    vals_numbers = [v[-3] for v in vals_split]
-    vals_clean = [v[:-5].replace(',','') for v in vals_numbers]
-    opens = vals_clean[0::6]
-    highs = vals_clean[1::6]
-    lows = vals_clean[2::6]
-    closes = vals_clean[3::6]
-    volumes = vals_clean[4::6]
-    caps = vals_clean[5::6]
-    col_names = ['date','open','high','low','close','volume','market cap']
-    df = pd.DataFrame(zip(datetime_obj,opens,highs,lows ,closes,volumes,caps), columns=col_names)
+
+def get_dates(soup):
+    dates_raw = soup.find_all(class_= "cmc-table__cell cmc-table__cell--sticky cmc-table__cell--left")
+    dates = [datetime.strptime(re.search('<div class="">(.+)</div>', d).group(1),'%b %d, %Y').date() for d in [str(dates_raw[i]) for i in range(len(dates_raw))]]
+    return dates
+
+
+def get_rates(soup):
+    rates_raw = soup.find_all(class_="cmc-table__cell cmc-table__cell--right")
+    rates = [re.search('<div class="">(.+)</div>', v).group(1).replace(',','') for v in [str(rates_raw[i]) for i in range(len(rates_raw))]]
+    return rates
+
+
+def create_dataframe(coin):
+    soup = create_soup(coin)
+    dates = get_dates(soup)
+    rates = get_rates(soup)
+    col_names = ['Date', 'Open', 'High', 'Low', 'Close', 'Volume', 'Cap']
+    for i in range(len(col_names)-1):
+        globals()[col_names[i+1]] = rates[i::6]
+    df = pd.DataFrame(zip(dates, Open, High, Low, Close, Volume, Cap), columns=col_names)
     df[col_names[1:]] = round(df[col_names[1:]].astype(float),2)
-    # print(df)
-    return df
+    if df.empty:
+        return None
+    else:
+        return df
+
 
 def create_dictionary():
     curr = get_100_currencies()
-    dictionary = dict((key, experiments(load_coin_from_file(key), key)) for key in curr.keys())
-    for key, value in sorted(dictionary.items()):
-        print(key, value)
+    dictionary = {key: create_dataframe(key) for key in curr.keys()}
+    pickle_name = 'dict.data'
+    outfile = open(pickle_name, 'wb')
+    pickle.dump(dictionary, outfile)
+    outfile.close()
+############################
 
 
-    # pickle_name = 'dict.data'
-    # outfile = open(pickle_name, 'wb')
-    # pickle.dump(dictionary, outfile)
-    # outfile.close()
+def read_dictionary():
+    """load content from saved pickle file"""
+    pickle_name = 'dict.data'
+    infile = open(pickle_name, 'rb')
+    dictionary = pickle.load(infile)
+    infile.close()
+    return dictionary
 
 
 if __name__ == '__main__':
     """use this command to update the pickle files we use"""
-    # update_all_coins_data(get_100_currencies())
-    # create_dictionary()
-    # experiments(load_coin_from_file('IOTA'), 'IOTA')
-
-
+    update_all_coins_data(get_100_currencies())
+    create_dictionary()
+    dictionary = read_dictionary()
+    print('items in dictionary:', len(dictionary))
+    print('items without data in dictionary:', sum(value is None for value in dictionary.values()))
+    print('missing coins are:')
+    for key, value in dictionary.items():
+        if value is None:
+            print(key)
 
