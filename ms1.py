@@ -31,6 +31,7 @@ def download_coin_data(coin, end_date):
     html = 'https://coinmarketcap.com/currencies/' + coin.lower() + '/historical-data/?start=20110428&end=' + end_date
     try:
         page_get = requests.get(html)
+        Path("pickles\\").mkdir(parents=True, exist_ok=True)
         pickle_name = 'pickles\\' + str(coin)
         print(pickle_name)
         outfile = open(pickle_name, 'wb')
@@ -112,12 +113,20 @@ def read_dictionary():
 
 if __name__ == '__main__':
     """use this command to update the pickle files we use"""
-    update_all_coins_data(get_100_currencies())
-    create_dictionary()
+    # update_all_coins_data(get_100_currencies())
+    # create_dictionary()
+    """grey out the above functions after there first run"""
     dictionary = read_dictionary()
     print('items in dictionary:', len(dictionary))
+    print('\n')
+
+    print('items with data in dictionary:')
+    for key, value in dictionary.items():
+        if value is not None:
+            print(key)
+
+    print('\n')
     print('items without data in dictionary:', sum(value is None for value in dictionary.values()))
-    print('missing coins are:')
     for key, value in dictionary.items():
         if value is None:
             print(key)
