@@ -112,8 +112,6 @@ def read_dictionary():
     infile.close()
     return dictionary
 
-def read_others_to_dataframe(coin):
-
 
 if __name__ == '__main__':
     """use this command to update the pickle files we use"""

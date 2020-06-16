@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8125e102-1776-49fd-b7d6-0c5cc243b413" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/yuval_games.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ms1.py" beforeDir="false" afterPath="$PROJECT_DIR$/ms1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuval_games.py" beforeDir="false" afterPath="$PROJECT_DIR$/yuval_games.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -177,7 +177,13 @@
       <option name="presentableId" value="LOCAL‎00007" />
       <updated>1592056807213</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL‎00008" summary="basic functions - update scraped data per coin, main, experiments zone.">
+      <created>1592289992896</created>
+      <option name="number" value="LOCAL‎00008" />
+      <option name="presentableId" value="LOCAL‎00008" />
+      <updated>1592289992896</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
