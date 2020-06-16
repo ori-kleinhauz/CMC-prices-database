@@ -6,6 +6,7 @@ from datetime import datetime
 import pandas as pd
 import re
 from pathlib import Path
+from yuval_games import what
 MOST_TRADED_CRYPTOS = 'https://trading-education.com/top-100-cryptocurrencies-on-coinmarketcap-in-one-sentence'
 
 
@@ -79,6 +80,7 @@ def get_rates(soup):
 
 def create_dataframe(coin):
     soup = create_soup(coin)
+    print(soup.prettify())
     dates = get_dates(soup)
     rates = get_rates(soup)
     col_names = ['Date', 'Open', 'High', 'Low', 'Close', 'Volume', 'Cap']
@@ -109,6 +111,8 @@ def read_dictionary():
     dictionary = pickle.load(infile)
     infile.close()
     return dictionary
+
+def read_others_to_dataframe(coin):
 
 
 if __name__ == '__main__':

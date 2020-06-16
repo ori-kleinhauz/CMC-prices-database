@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8125e102-1776-49fd-b7d6-0c5cc243b413" name="Default Changelist" comment="basic functions - update scraped data per coin, main, experiments zone.">
-      <change beforePath="$PROJECT_DIR$/.idea/Data Mining Project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Data Mining Project.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="8125e102-1776-49fd-b7d6-0c5cc243b413" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/yuval_games.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ms1.py" beforeDir="false" afterPath="$PROJECT_DIR$/ms1.py" afterDir="false" />
     </list>
@@ -172,7 +171,13 @@
       <option name="presentableId" value="LOCAL‎00006" />
       <updated>1592055867561</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL‎00007" summary="basic functions - update scraped data per coin, main, experiments zone.">
+      <created>1592056807213</created>
+      <option name="number" value="LOCAL‎00007" />
+      <option name="presentableId" value="LOCAL‎00007" />
+      <updated>1592056807213</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -201,9 +206,9 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="added beautifulsoup4 - parse the responses" />
     <MESSAGE value="print HTML content" />
-    <MESSAGE value="basic functions - update scraped data per coin, main, experiments zone." />
     <MESSAGE value="working functionality.&#10;85 coins-dataframes are still missing." />
-    <option name="LAST_COMMIT_MESSAGE" value="working functionality.&#10;85 coins-dataframes are still missing." />
+    <MESSAGE value="basic functions - update scraped data per coin, main, experiments zone." />
+    <option name="LAST_COMMIT_MESSAGE" value="basic functions - update scraped data per coin, main, experiments zone." />
   </component>
   <component name="WindowStateProjectService">
     <state width="1515" height="210" key="GridCell.Tab.0.bottom" />
