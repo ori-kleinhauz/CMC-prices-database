@@ -1,3 +1,12 @@
+"""
+Top 100 crypto currencies database scrapper
+
+Authors:
+Ori Kleinhauz
+Yuval Herman
+
+"""
+
 import requests
 from bs4 import BeautifulSoup
 import pickle
@@ -14,6 +23,8 @@ HOMEPAGE = 'https://coinmarketcap.com/'
 
 #############################
 def get_100_currencies():
+    """ creates and returns a dictionary of cryptocurrency names and their corresponding url suffixes to be used for
+       scraping """
     page_get = requests.get(HOMEPAGE)
     soup = BeautifulSoup(page_get.content, 'html.parser')
     curr = {}
@@ -62,12 +73,14 @@ def load_coin_from_file(coin):
 ############################
 # methods for Creating dataframes for each coin and placing all in one dictionary of {COIN : DATAFRAME}'s
 def create_soup(coin):
+    """ creates and returns a beutifulsoup object of historical data for a given cryptocurrency"""
     page = load_coin_from_file(coin)
     soup = BeautifulSoup(page.content, 'html.parser')
     return soup
 
 
 def get_dates(soup):
+    """ creates and returns a list of datetime objects for the history of a given cryptocurrency"""
     dates_raw = [d.text for d in
                  soup.findAll("td", class_="cmc-table__cell cmc-table__cell--sticky cmc-table__cell--left")]
     dates = [datetime.strptime(d, '%b %d, %Y').date() for d in dates_raw]
@@ -75,12 +88,14 @@ def get_dates(soup):
 
 
 def get_rates(soup):
+    """ creates and returns a list of rates(open, close etc.) for the history of a given cryptocurrency"""
     rates_raw = [d.text for d in soup.findAll("td", class_="cmc-table__cell cmc-table__cell--right")]
     rates = [r.replace(',', '') for r in rates_raw]
     return rates
 
 
 def create_dataframe(coin):
+    """ creates a dataframe containing the rates of a cryptocurrency for each date in its history of existence"""
     try:
         soup = create_soup(coin)
         if soup.is_empty_element:
@@ -109,6 +124,7 @@ def create_dataframe(coin):
 
 
 def create_dictionary():
+    """ creates a dictionary of dataframes for each of the 100 cryptocurrencies scraped"""
     curr = get_100_currencies()
     files_list = os.listdir('pickles')
     curr = {k: v for k, v in curr.items() if v.lower() in files_list}
@@ -163,7 +179,6 @@ def main():
             choose one of them, then displays its data """
         # update_all_coins_data(get_100_currencies())
         # create_dictionary()
-
         # Comment the above functions if you ran them once already today
 
         dictionary = read_dictionary()
