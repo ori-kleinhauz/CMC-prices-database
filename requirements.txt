@@ -1,5 +1,4 @@
 beautifulsoup4
-beautifulsoup4
 brotlipy==0.7.0
 certifi==2020.4.5.2
 cffi==1.14.0
@@ -7,7 +6,7 @@ chardet==3.0.4
 cryptography==2.9.2
 idna==2.9
 numpy
-pandas
+pandas==0.25
 pycparser==2.20
 pyOpenSSL==19.1.0
 PySocks==1.7.1
