@@ -161,7 +161,7 @@ def main():
         # current date"
         """ updates the dictionary containing historical data for each cryptocurrency(optional) and prompts the user to
             choose one of them, then displays its data """
-        update_all_coins_data(get_100_currencies())
+        # update_all_coins_data(get_100_currencies())
         # create_dictionary()
 
         # Comment the above functions if you ran them once already today

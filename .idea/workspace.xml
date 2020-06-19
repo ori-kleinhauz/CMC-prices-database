@@ -2,13 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8125e102-1776-49fd-b7d6-0c5cc243b413" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/README.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/Data Mining Project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Data Mining Project.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms1.py" beforeDir="false" afterPath="$PROJECT_DIR$/ms1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yuval_games.py" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -237,7 +233,25 @@
       <option name="presentableId" value="LOCAL‎00009" />
       <updated>1592290024225</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL‎00010" summary="basic functions - update scraped data per coin, main, experiments zone.">
+      <created>1592470595411</created>
+      <option name="number" value="LOCAL‎00010" />
+      <option name="presentableId" value="LOCAL‎00010" />
+      <updated>1592470595411</updated>
+    </task>
+    <task id="LOCAL‎00011" summary="basic functions - update scraped data per coin, main, experiments zone.">
+      <created>1592470629813</created>
+      <option name="number" value="LOCAL‎00011" />
+      <option name="presentableId" value="LOCAL‎00011" />
+      <updated>1592470629813</updated>
+    </task>
+    <task id="LOCAL‎00012" summary="basic functions - update scraped data per coin, main, experiments zone.">
+      <created>1592562522725</created>
+      <option name="number" value="LOCAL‎00012" />
+      <option name="presentableId" value="LOCAL‎00012" />
+      <updated>1592562522725</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">

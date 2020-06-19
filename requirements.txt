@@ -1,3 +1,4 @@
+beautifulsoup4
 beautifulsoup4 @ file:///D:/bld/beautifulsoup4_1589761031242/work
 brotlipy==0.7.0
 certifi==2020.4.5.2
