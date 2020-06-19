@@ -2,6 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8125e102-1776-49fd-b7d6-0c5cc243b413" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/README.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Data Mining Project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Data Mining Project.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ms1.py" beforeDir="false" afterPath="$PROJECT_DIR$/ms1.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yuval_games.py" beforeDir="false" />
