@@ -19,6 +19,6 @@ As default, the program searches for the file 'dict.data' in the project's direc
 In cases when the file is not present, or needs an update in your perspective, please choose yes ('y') when prompted by the program to update(create) the file.
 otherwise, choose no ('n') to pick a currency and display its data
 
-*** Be aware that every update of the database takes ~40 minutes to complete, due to limited requests\min the website allows (at least when using single IP for all requests).
+*** Be aware that every update of the database takes ~25 minutes to complete, due to limited requests\min the website allows (at least when using single IP for all requests).
 
 enjoy!

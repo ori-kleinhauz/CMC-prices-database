@@ -193,7 +193,7 @@ def main():
             choose one of them, then displays its data """
 
     try:
-        choice = input("would you like to update coin data to the most recent date? this process takes ~40 min. ("
+        choice = input("would you like to update coin data to the most recent date? this process takes ~25 min. ("
                        "y/n)?: ")
         if choice == 'y':
             update_all_coins_data(get_100_currencies())
