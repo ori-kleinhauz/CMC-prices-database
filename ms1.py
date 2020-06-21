@@ -138,9 +138,7 @@ def create_dictionary():
             dictionary[key] = create_dataframe(value.lower())
         except:
             raise ProcessLookupError('Error creating dictionary from temporary pickle files.'
-                                     'currencies list and data in database must be aligned.'
-                                     'please uncomment  and run "update_all_coins_data()" in main()'
-                                     'prior to "create_dictionary"')
+                                     'currencies list and data in database must be aligned.')
     pickle_name = 'dict.data'
     outfile = open(pickle_name, 'wb')
     pickle.dump(dictionary, outfile)
@@ -163,11 +161,8 @@ def read_dictionary():
         return dictionary
     except:
         raise FileNotFoundError('Dictionary file not present in the current folder!,'
-                                'make sure to download it from github repository, or create it by enabling the '
-                                'functions in main(): '
-                                '1. update_all_coins_data(get_100_currencies()) '
-                                '2. create_dictionary()')
-
+                                'make sure to download it from github repository, '
+                                'or create it by choosing "y" for updating the database.')
 
 ##############################
 def choose_coin():
@@ -193,7 +188,7 @@ def main():
             choose one of them, then displays its data """
 
     try:
-        choice = input("would you like to update coin data to the most recent date? this process takes ~25 min. ("
+        choice = input("would you like to update coin data to the most recent date? this process takes ~30 min. ("
                        "y/n)?: ")
         if choice == 'y':
             update_all_coins_data(get_100_currencies())
