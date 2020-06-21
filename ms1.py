@@ -34,6 +34,7 @@ def get_100_currencies():
     for l in tqdm(links):
         if 'currencies' in l['href']:
             curr[l['title']] = l['href'].split('/')[2]
+    sleep(15)
     return curr
 
 
@@ -57,7 +58,7 @@ def update_all_coins_data(currencies_to_update):
     current_day = str(datetime.now().strftime("%Y%m%d"))
     for coin, url in tqdm(currencies_to_update.items()):
         download_coin_data(url, current_day)
-        sleep(20)
+        sleep(15)
 
 
 def load_coin_from_file(coin):
