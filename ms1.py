@@ -18,6 +18,8 @@ import os
 from time import sleep
 import shutil
 from tqdm import tqdm
+import sys
+
 HOMEPAGE = 'https://coinmarketcap.com/'
 
 
@@ -55,7 +57,7 @@ def update_all_coins_data(currencies_to_update):
     current_day = str(datetime.now().strftime("%Y%m%d"))
     for coin, url in tqdm(currencies_to_update.items()):
         download_coin_data(url, current_day)
-        sleep(15)
+        sleep(20)
 
 
 def load_coin_from_file(coin):
@@ -146,7 +148,6 @@ def create_dictionary():
         shutil.rmtree('pickles', ignore_errors=True)
     except:
         raise NotADirectoryError("Directory not found / couldn't delete folder")
-
 ############################
 
 
@@ -160,39 +161,52 @@ def read_dictionary():
         infile.close()
         return dictionary
     except:
-        raise FileNotFoundError('Dictionary file not present in the current folder!,' 
+        raise FileNotFoundError('Dictionary file not present in the current folder!,'
                                 'make sure to download it from github repository, or create it by enabling the '
                                 'functions in main(): '
                                 '1. update_all_coins_data(get_100_currencies()) '
                                 '2. create_dictionary()')
 
-##############################
-
 
 ##############################
-def main():
-
-    try:
-        # Please use the commands below only if you wish to update the dictionary containing historical data to the
-        # current date"
-        """ updates the dictionary containing historical data for each cryptocurrency(optional) and prompts the user to
-            choose one of them, then displays its data """
-        # update_all_coins_data(get_100_currencies())
-        # create_dictionary()
-        # Comment the above functions if you ran them once already today
-
-        dictionary = read_dictionary()
-        print('---Below is a list of keys for which historical information is available in the dictionary\n')
-        for counter, key in enumerate(dictionary.keys()):
-            print(counter, ':', key)
-        coin_to_display = input('\nPlease choose a coin from the above list to display its history: ')
-
+def choose_coin():
+    """prompts the user to pick a currency from the dictionary and displays its data"""
+    dictionary = read_dictionary()
+    for counter, key in enumerate(dictionary.keys()):
+        print(counter+1, ':', key)
+    print('---above is a list of keys for which historical information is available in the dictionary\n')
+    while True:
+        coin_to_display = input('\nPlease choose a coin from the above list to display its history (or press q to '
+                                'exit): ')
+        if coin_to_display == 'q':
+            sys.exit(0)
         if coin_to_display in dictionary.keys():
             print(coin_to_display, '\n', dictionary[coin_to_display])
         else:
             print(coin_to_display, ' - is not a coin in the available database')
+
+
+##############################
+def main():
+    """ updates the dictionary containing historical data for each cryptocurrency(optional) and prompts the user to
+            choose one of them, then displays its data """
+
+    try:
+        choice = input("would you like to update coin data to the most recent date? this process takes ~40 min. ("
+                       "y/n)?: ")
+        if choice == 'y':
+            update_all_coins_data(get_100_currencies())
+            create_dictionary()
+            choose_coin()
+        elif choice == 'n':
+            choose_coin()
+        else:
+            raise Exception("Invalid choice, please choose (y/n): ")
+
     except Exception as ex:
         print(ex)
+
+
 ##############################
 
 

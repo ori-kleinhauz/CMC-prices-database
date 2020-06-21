@@ -16,16 +16,9 @@ This is naturally great news to anyone wishes to built a 100 crypto currencies h
 Notifications:
 As default, the program searches for the file 'dict.data' in the project's directory and offers historical rates per the user's input from it.
 
-In cases when the file is not present - either because you didn't clone it / deleted it / the file needs an update in your perspective :
-a deviation from default operations in required as follows --> you are required to uncomment the following functions at the first run of the program :
-1. update_all_coins_data(get_100_currencies())
-2. create_dictionary()
-both functions are currently commented and are located in main().
-please remember to re-comment these functions after database finished the update/built.
+In cases when the file is not present, or needs an update in your perspective, please choose yes ('y') when prompted by the program to update(create) the file.
+otherwise, choose no ('n') to pick a currency and display its data
 
-*** Be aware that every update of the database takes 25 minutes to complete, due to limited requests\min the website allowes (at least when using single IP for all requests).
+*** Be aware that every update of the database takes ~40 minutes to complete, due to limited requests\min the website allows (at least when using single IP for all requests).
 
 enjoy!
-
-
-
