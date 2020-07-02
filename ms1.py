@@ -41,7 +41,7 @@ def get_100_currencies():
 
 def download_coin_data(coin, end_date):
     """downloads the content online from CMC and saves to pickle file"""
-    html = 'https://coinmarketcap.com/currencies/' + coin + '/historical-data/?start=20110428&end=' + end_date
+    html = f'https://coinmarketcap.com/currencies/{coin}/historical-data/?start={args.date}&end={end_date}'
     try:
         page_get = requests.get(html)
         Path("pickles\\").mkdir(parents=True, exist_ok=True)
@@ -191,16 +191,14 @@ def main():
     """ updates the dictionary containing historical data for each cryptocurrency(optional) and prompts the user to
             choose one of them, then displays its data """
     parser = argparse.ArgumentParser()
-    parser.add_argument('coin', help='Choose between Bitcoin and Ethereum')
-    parser.add_argument('rate', help='Choose between Open, Close, High, Low, Volume, and Cap')
-    parser.add_argument('date', help='Choose in y-m-d format')
     parser.add_argument('-u', '--u', help='Update database', action='store_true')
+    parser.add_argument('date', nargs='?', default=str(datetime.now().strftime("%Y%m%d")))
     args = parser.parse_args()
     if args.u:
         update_all_coins_data(get_100_currencies())
         create_dictionary()
-    dictionary = read_dictionary()
-    print(dictionary[args.coin][dictionary[args.coin]['Date']==args.date])
+    print(args.date)
+    # dictionary = read_dictionary()
     # try:
     #     choice = input("would you like to update coin data to the most recent date? this process takes ~30 min. ("
     #                    "y/n)?: ")
