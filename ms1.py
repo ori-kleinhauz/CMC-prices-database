@@ -196,23 +196,6 @@ def main():
     if args.u:
         update_all_coins_data(get_100_currencies())
         create_dictionary()
-    # dictionary = read_dictionary()
-    # try:
-    #     choice = input("would you like to update coin data to the most recent date? this process takes ~30 min. ("
-    #                    "y/n)?: ")
-    #     if choice == 'y':
-    #         update_all_coins_data(get_100_currencies())
-    #         create_dictionary()
-    #         choose_coin()
-    #     elif choice == 'n':
-    #         choose_coin()
-    #     else:
-    #         raise Exception("Invalid choice, please choose (y/n): ")
-    #
-    # except Exception as ex:
-    #     print(ex)
-
-
 ##############################
 
 
