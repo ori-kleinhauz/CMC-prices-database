@@ -1,5 +1,5 @@
 """
-Top 100 crypto currencies database scrapper
+Top 100 crypto currencies database scraper
 
 Authors:
 Ori Kleinhauz
@@ -114,9 +114,15 @@ def create_dataframe(coin):
             raise RuntimeError('Error reading rates from soup object for' + coin)
 
         col_names = ['Date', 'Open', 'High', 'Low', 'Close', 'Volume', 'Cap']
-        for i in range(len(col_names) - 1):
-            globals()[col_names[i + 1]] = rates[i::6]
-        df = pd.DataFrame(zip(dates, Open, High, Low, Close, Volume, Cap), columns=col_names)
+
+        opens = rates[0::6]
+        highs = rates[1::6]
+        lows = rates[2::6]
+        closes = rates[3::6]
+        volumes = rates[4::6]
+        caps = rates[5::6]
+
+        df = pd.DataFrame(zip(dates, opens, highs, lows, closes, volumes, caps), columns=col_names)
         df[col_names[1:]] = round(df[col_names[1:]].astype(float), 2)
 
         if df.empty:
@@ -127,14 +133,13 @@ def create_dataframe(coin):
         raise
 
 
-def create_dictionary():
+def create_dictionary(curr):
     """ creates a dictionary of dataframes for each of the 100 cryptocurrencies scraped"""
-    curr = get_100_currencies()
     files_list = os.listdir('pickles')
-    curr = {k: v for k, v in curr.items() if v.lower() in files_list}
+    curs = {k: v for k, v in curr.items() if v.lower() in files_list}
     dictionary = {}
     print('Creating Dictionary...')
-    for key, value in tqdm(curr.items()):
+    for key, value in tqdm(curs.items()):
         try:
             dictionary[key] = create_dataframe(value.lower())
         except:
@@ -192,10 +197,15 @@ def main():
             choose one of them, then displays its data """
     parser = argparse.ArgumentParser()
     parser.add_argument('-u', '--u', help='Update database', action='store_true')
+    parser.add_argument('-c', '--c', help='Choose coin', action='store_true')
     args = parser.parse_args()
     if args.u:
-        update_all_coins_data(get_100_currencies())
-        create_dictionary()
+        curr = get_100_currencies()
+        update_all_coins_data(curr)
+        create_dictionary(curr)
+    if args.c:
+        choose_coin()
+
 ##############################
 
 

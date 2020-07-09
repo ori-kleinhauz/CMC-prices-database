@@ -9,19 +9,26 @@ pymysql.converters.conversions.update(pymysql.converters.decoders)
 
 
 def create_connection(db, pswd):
-
-    con = pymysql.connect(host='localhost',
-                          user='root',
-                          password=pswd,
-                          charset='utf8mb4',
-                          cursorclass=pymysql.cursors.DictCursor)
-    create_db(con, db)
-    con = pymysql.connect(host='localhost',
-                          user='root',
-                          password=pswd,
-                          charset='utf8mb4',
-                          database=db,
-                          cursorclass=pymysql.cursors.DictCursor)
+    try:
+        con = pymysql.connect(host='localhost',
+                              user='root',
+                              password=pswd,
+                              charset='utf8mb4',
+                              database=db,
+                              cursorclass=pymysql.cursors.DictCursor)
+    except:
+        con = pymysql.connect(host='localhost',
+                              user='root',
+                              password=pswd,
+                              charset='utf8mb4',
+                              cursorclass=pymysql.cursors.DictCursor)
+        create_db(con, db)
+        con = pymysql.connect(host='localhost',
+                              user='root',
+                              password=pswd,
+                              charset='utf8mb4',
+                              database=db,
+                              cursorclass=pymysql.cursors.DictCursor)
     return con
 
 
@@ -46,17 +53,43 @@ def create_tables(con):
                         foreign key (coin_id) references coins(id))""")
 
 
-def insert_values(con, dfs):
+def insert_coins(con, dfs):
     with con.cursor() as cur:
-        for i in range(len(dfs.keys())):
-            cur.execute("insert into coins (id, name) values (%s, %s)", (i, list(dfs.keys())[i]))
+        for i, n in enumerate(dfs.keys()):
+            cur.execute("insert into coins (id, name) values (%s, %s)", (i + 1, n))
         con.commit()
 
-        for i in range(len(dfs.keys())):
-            for j in range(len(dfs[list(dfs.keys())[i]])):
+
+def insert_rates(con, dfs):
+    with con.cursor() as cur:
+        for i, df in enumerate(dfs.values()):
+            for j in range(len(df)):
                 cur.execute("insert into rates (coin_id, date, open, high, low,  close, volume, cap)"
                             "values (%s, %s, %s, %s, %s, %s, %s, %s)",
-                            (i,
+                            (i + 1,
+                             dfs[list(dfs.keys())[i]]['Date'][j],
+                             dfs[list(dfs.keys())[i]]['Open'][j],
+                             dfs[list(dfs.keys())[i]]['High'][j],
+                             dfs[list(dfs.keys())[i]]['Low'][j],
+                             dfs[list(dfs.keys())[i]]['Close'][j],
+                             dfs[list(dfs.keys())[i]]['Volume'][j],
+                             dfs[list(dfs.keys())[i]]['Cap'][j]
+                             )
+                            )
+        con.commit()
+
+
+def update_rates(con, dfs):
+    with con.cursor() as cur:
+        for i, n, df in enumerate(dfs.items()):
+            cur.execute("select max(date) from rates join coins on rates.coin_id=coins.id where name=(%s)", (n))
+            result = cur.fetchall()
+            max_date = result[0]
+            df_new = df[df['date'] > max_date]
+            for j in range(len(df_new)):
+                cur.execute("insert into rates (coin_id, date, open, high, low,  close, volume, cap)"
+                            "values (%s, %s, %s, %s, %s, %s, %s, %s)",
+                            (i + 1,
                              dfs[list(dfs.keys())[i]]['Date'][j],
                              dfs[list(dfs.keys())[i]]['Open'][j],
                              dfs[list(dfs.keys())[i]]['High'][j],
@@ -77,7 +110,9 @@ def main():
     df_dict = read_dictionary()
     con = create_connection(args.db_name, args.password)
     create_tables(con)
-    insert_values(con, df_dict)
+    insert_coins(con, df_dict)
+    insert_rates(con, df_dict)
+    # update_rates(con, df_dict)
 
 
 if __name__ == '__main__':

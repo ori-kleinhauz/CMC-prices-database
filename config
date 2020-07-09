@@ -1,0 +1,4 @@
+HOMEPAGE = 'https://coinmarketcap.com/'
+HTMLCUR = 'https://coinmarketcap.com/currencies/'
+HTMLHIS = '/historical-data/?start=20130429&end='
+RATESKIP = 6
