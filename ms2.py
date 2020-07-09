@@ -16,6 +16,7 @@ def create_connection(db, pswd):
                               charset='utf8mb4',
                               database=db,
                               cursorclass=pymysql.cursors.DictCursor)
+        exists = True
     except:
         con = pymysql.connect(host='localhost',
                               user='root',
@@ -29,7 +30,8 @@ def create_connection(db, pswd):
                               charset='utf8mb4',
                               database=db,
                               cursorclass=pymysql.cursors.DictCursor)
-    return con
+        exists = False
+    return con, exists
 
 
 def create_db(con, name):
@@ -81,11 +83,11 @@ def insert_rates(con, dfs):
 
 def update_rates(con, dfs):
     with con.cursor() as cur:
-        for i, n, df in enumerate(dfs.items()):
+        for i, (n, df) in enumerate(dfs.items()):
             cur.execute("select max(date) from rates join coins on rates.coin_id=coins.id where name=(%s)", (n))
             result = cur.fetchall()
             max_date = result[0]
-            df_new = df[df['date'] > max_date]
+            df_new = df[df['Date'] > list(max_date.values())[0]]
             for j in range(len(df_new)):
                 cur.execute("insert into rates (coin_id, date, open, high, low,  close, volume, cap)"
                             "values (%s, %s, %s, %s, %s, %s, %s, %s)",
@@ -108,11 +110,14 @@ def main():
     parser.add_argument('db_name', help='database name', type=str)
     args = parser.parse_args()
     df_dict = read_dictionary()
-    con = create_connection(args.db_name, args.password)
-    create_tables(con)
-    insert_coins(con, df_dict)
-    insert_rates(con, df_dict)
-    # update_rates(con, df_dict)
+    con, exists = create_connection(args.db_name, args.password)
+    if exists:
+        update_rates(con, df_dict)
+    else:
+        create_tables(con)
+        insert_coins(con, df_dict)
+        insert_rates(con, df_dict)
+
 
 
 if __name__ == '__main__':
