@@ -32,13 +32,14 @@ def create_db(con, name):
 
 def create_tables(con):
     with con.cursor() as cur:
-        cur.execute("create table coins (id int primary key, currency char(255))")
+        cur.execute("create table coins (id int primary key, name char(255))")
         cur.execute("""create table rates
                         (id int primary key auto_increment, 
                         coin_id int, 
                         date date, 
                         open float, 
                         high float, 
+                        low float,
                         close float, 
                         volume float, 
                         cap float,
@@ -48,17 +49,18 @@ def create_tables(con):
 def insert_values(con, dfs):
     with con.cursor() as cur:
         for i in range(len(dfs.keys())):
-            cur.execute("insert into coins (id, currency) values (%s, %s)", (i, list(dfs.keys())[i]))
+            cur.execute("insert into coins (id, name) values (%s, %s)", (i, list(dfs.keys())[i]))
         con.commit()
 
         for i in range(len(dfs.keys())):
             for j in range(len(dfs[list(dfs.keys())[i]])):
-                cur.execute("insert into rates (coin_id, date, open, high, close, volume, cap)"
-                            "values (%s, %s, %s, %s, %s, %s, %s)",
+                cur.execute("insert into rates (coin_id, date, open, high, low,  close, volume, cap)"
+                            "values (%s, %s, %s, %s, %s, %s, %s, %s)",
                             (i,
                              dfs[list(dfs.keys())[i]]['Date'][j],
                              dfs[list(dfs.keys())[i]]['Open'][j],
                              dfs[list(dfs.keys())[i]]['High'][j],
+                             dfs[list(dfs.keys())[i]]['Low'][j],
                              dfs[list(dfs.keys())[i]]['Close'][j],
                              dfs[list(dfs.keys())[i]]['Volume'][j],
                              dfs[list(dfs.keys())[i]]['Cap'][j]
