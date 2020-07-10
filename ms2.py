@@ -2,8 +2,11 @@ import pymysql.cursors
 import numpy as np
 from ms1 import read_dictionary
 import argparse
+from tqdm import tqdm
 
-# used to prevent AttributeError: 'numpy.float64' object has no attribute 'translate'
+
+# used to prevent AttributeError: 'numpy.float64' object has no attribute 'translate' when inserting values from
+# dataframe to db
 pymysql.converters.encoders[np.float64] = pymysql.converters.escape_float
 pymysql.converters.conversions = pymysql.converters.encoders.copy()
 pymysql.converters.conversions.update(pymysql.converters.decoders)
@@ -47,7 +50,7 @@ def create_db(con, name):
 def create_tables(con):
     """creates the coins and rates tables in the connected database.
      uses unique primary keys for each coin and each rate entry,
-     and a foreign one to many key from the coins table to the rates table"""
+     and a foreign one-to-many key from the coins table to the rates table"""
     with con.cursor() as cur:
         cur.execute("create table coins (id int primary key auto_increment, name char(255))")
         cur.execute("""create table rates
