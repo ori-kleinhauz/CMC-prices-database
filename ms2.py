@@ -24,7 +24,7 @@ def create_connection(db, pswd):
                               database=db,
                               cursorclass=pymysql.cursors.DictCursor)
         empty = False
-    except:
+    except pymysql.err.InternalError:
         con = pymysql.connect(host='localhost',
                               user='root',
                               password=pswd,
@@ -69,7 +69,7 @@ def create_tables(con):
 def insert_coins(con, dfs):
     """populates the coins table using the dataframes dictionary created in ms1.py"""
     with con.cursor() as cur:
-        for n in dfs.keys():
+        for n in tqdm(dfs.keys()):
             cur.execute("insert into coins (name) values (%s)", n)
         con.commit()
 
@@ -78,7 +78,7 @@ def insert_rates(con, dfs):
     """populates the rates table using the dataframes dictionary created in ms1.py"""
     with con.cursor() as cur:
         for i, df in enumerate(dfs.values()):
-            for j in range(len(df)):
+            for j in tqdm(range(len(df))):
                 cur.execute("insert into rates (coin_id, date, open, high, low,  close, volume, cap)"
                             "values (%s, %s, %s, %s, %s, %s, %s, %s)",
                             (i + 1,
@@ -107,7 +107,7 @@ def update_rates(con, dfs):
             result = cur.fetchall()
             cid = result[0]
             df_new = df[df['Date'] > list(max_date.values())[0]]
-            for j in range(len(df_new)):
+            for j in tqdm(range(len(df_new))):
                 cur.execute("insert into rates (coin_id, date, open, high, low,  close, volume, cap)"
                             "values (%s, %s, %s, %s, %s, %s, %s, %s)",
                             (list(cid.values())[0],
