@@ -1,5 +1,5 @@
 """
-Top 100 crypto currencies database scrapper
+Top 100 crypto currencies database scraper
 
 Authors:
 Ori Kleinhauz
@@ -19,6 +19,7 @@ from time import sleep
 import shutil
 from tqdm import tqdm
 import sys
+import argparse
 
 HOMEPAGE = 'https://coinmarketcap.com/'
 
@@ -40,7 +41,7 @@ def get_100_currencies():
 
 def download_coin_data(coin, end_date):
     """downloads the content online from CMC and saves to pickle file"""
-    html = 'https://coinmarketcap.com/currencies/' + coin + '/historical-data/?start=20110428&end=' + end_date
+    html = f'https://coinmarketcap.com/currencies/{coin}/historical-data/?start=20130429&end={end_date}'
     try:
         page_get = requests.get(html)
         Path("pickles\\").mkdir(parents=True, exist_ok=True)
@@ -113,9 +114,15 @@ def create_dataframe(coin):
             raise RuntimeError('Error reading rates from soup object for' + coin)
 
         col_names = ['Date', 'Open', 'High', 'Low', 'Close', 'Volume', 'Cap']
-        for i in range(len(col_names) - 1):
-            globals()[col_names[i + 1]] = rates[i::6]
-        df = pd.DataFrame(zip(dates, Open, High, Low, Close, Volume, Cap), columns=col_names)
+
+        opens = rates[0::6]
+        highs = rates[1::6]
+        lows = rates[2::6]
+        closes = rates[3::6]
+        volumes = rates[4::6]
+        caps = rates[5::6]
+
+        df = pd.DataFrame(zip(dates, opens, highs, lows, closes, volumes, caps), columns=col_names)
         df[col_names[1:]] = round(df[col_names[1:]].astype(float), 2)
 
         if df.empty:
@@ -126,14 +133,13 @@ def create_dataframe(coin):
         raise
 
 
-def create_dictionary():
+def create_dictionary(curr):
     """ creates a dictionary of dataframes for each of the 100 cryptocurrencies scraped"""
-    curr = get_100_currencies()
     files_list = os.listdir('pickles')
-    curr = {k: v for k, v in curr.items() if v.lower() in files_list}
+    curs = {k: v for k, v in curr.items() if v.lower() in files_list}
     dictionary = {}
     print('Creating Dictionary...')
-    for key, value in tqdm(curr.items()):
+    for key, value in tqdm(curs.items()):
         try:
             dictionary[key] = create_dataframe(value.lower())
         except:
@@ -147,6 +153,8 @@ def create_dictionary():
         shutil.rmtree('pickles', ignore_errors=True)
     except:
         raise NotADirectoryError("Directory not found / couldn't delete folder")
+
+
 ############################
 
 
@@ -164,12 +172,13 @@ def read_dictionary():
                                 'make sure to download it from github repository, '
                                 'or create it by choosing "y" for updating the database.')
 
+
 ##############################
 def choose_coin():
     """prompts the user to pick a currency from the dictionary and displays its data"""
     dictionary = read_dictionary()
     for counter, key in enumerate(dictionary.keys()):
-        print(counter+1, ':', key)
+        print(counter + 1, ':', key)
     print('---above is a list of keys for which historical information is available in the dictionary\n')
     while True:
         coin_to_display = input('\nPlease choose a coin from the above list to display its history (or press q to '
@@ -186,22 +195,16 @@ def choose_coin():
 def main():
     """ updates the dictionary containing historical data for each cryptocurrency(optional) and prompts the user to
             choose one of them, then displays its data """
-
-    try:
-        choice = input("would you like to update coin data to the most recent date? this process takes ~30 min. ("
-                       "y/n)?: ")
-        if choice == 'y':
-            update_all_coins_data(get_100_currencies())
-            create_dictionary()
-            choose_coin()
-        elif choice == 'n':
-            choose_coin()
-        else:
-            raise Exception("Invalid choice, please choose (y/n): ")
-
-    except Exception as ex:
-        print(ex)
-
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-u', '--u', help='Update database', action='store_true')
+    parser.add_argument('-c', '--c', help='Choose coin', action='store_true')
+    args = parser.parse_args()
+    if args.u:
+        curr = get_100_currencies()
+        update_all_coins_data(curr)
+        create_dictionary(curr)
+    if args.c:
+        choose_coin()
 
 ##############################
 
