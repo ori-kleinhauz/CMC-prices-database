@@ -20,28 +20,27 @@ import shutil
 from tqdm import tqdm
 import sys
 import argparse
-
-HOMEPAGE = 'https://coinmarketcap.com/'
+import config
 
 
 #############################
 def get_100_currencies():
     """ creates and returns a dictionary of cryptocurrency names and their corresponding url suffixes to be used for
        scraping """
-    page_get = requests.get(HOMEPAGE)
+    page_get = requests.get(config.HOMEPAGE)
     soup = BeautifulSoup(page_get.content, 'html.parser')
     curr = {}
     links = [l for l in soup.findAll("a", href=True, title=True, class_='cmc-link')]
     for l in tqdm(links):
         if 'currencies' in l['href']:
             curr[l['title']] = l['href'].split('/')[2]
-    sleep(15)
+    sleep(config.SLEEP_INTERVAL)
     return curr
 
 
 def download_coin_data(coin, end_date):
     """downloads the content online from CMC and saves to pickle file"""
-    html = f'https://coinmarketcap.com/currencies/{coin}/historical-data/?start=20130429&end={end_date}'
+    html = f'{config.CURRENCIES_PAGE}{coin}{config.CURRENCY_START}{end_date}'
     try:
         page_get = requests.get(html)
         Path("pickles\\").mkdir(parents=True, exist_ok=True)
@@ -50,8 +49,8 @@ def download_coin_data(coin, end_date):
         outfile = open(pickle_name, 'wb')
         pickle.dump(page_get, outfile)
         outfile.close()
-    except:
-        print('error locating', coin, 'data. check possible name mismatch on CMC')
+    except ConnectionError:
+        print(f'{config.ERRORS_MESSAGES["Connection_failed"]}')
 
 
 def update_all_coins_data(currencies_to_update):
@@ -59,7 +58,7 @@ def update_all_coins_data(currencies_to_update):
     current_day = str(datetime.now().strftime("%Y%m%d"))
     for coin, url in tqdm(currencies_to_update.items()):
         download_coin_data(url, current_day)
-        sleep(15)
+        sleep(config.SLEEP_INTERVAL)
 
 
 def load_coin_from_file(coin):
@@ -103,18 +102,17 @@ def create_dataframe(coin):
     try:
         soup = create_soup(coin)
         if soup.is_empty_element:
-            raise RuntimeError('Error reading soup object from' + coin + 'file')
+            raise RuntimeError(f'{config.ERRORS_MESSAGES["read_soup"]}')
 
         dates = get_dates(soup)
         if len(dates) == 0:
-            raise RuntimeError('Error reading dates from soup object for' + coin)
+            raise RuntimeError(f'{config.ERRORS_MESSAGES["read_dates"]}')
 
         rates = get_rates(soup)
         if len(rates) == 0:
-            raise RuntimeError('Error reading rates from soup object for' + coin)
+            raise RuntimeError(f'{config.ERRORS_MESSAGES["read_rates"]}')
 
-        col_names = ['Date', 'Open', 'High', 'Low', 'Close', 'Volume', 'Cap']
-
+        col_names = config.COL_NAMES
         opens = rates[0::6]
         highs = rates[1::6]
         lows = rates[2::6]
@@ -143,16 +141,15 @@ def create_dictionary(curr):
         try:
             dictionary[key] = create_dataframe(value.lower())
         except:
-            raise ProcessLookupError('Error creating dictionary from temporary pickle files.'
-                                     'currencies list and data in database must be aligned.')
-    pickle_name = 'dict.data'
+            raise ProcessLookupError(f'{config.ERRORS_MESSAGES["create_dict"]}')
+    pickle_name = config.DICTIONARY_NAME
     outfile = open(pickle_name, 'wb')
     pickle.dump(dictionary, outfile)
     outfile.close()
     try:
-        shutil.rmtree('pickles', ignore_errors=True)
+        shutil.rmtree(config.PICKLE_FOLDER, ignore_errors=True)
     except:
-        raise NotADirectoryError("Directory not found / couldn't delete folder")
+        raise NotADirectoryError(f'{config.ERRORS_MESSAGES["delete_pickles"]}')
 
 
 ############################
@@ -168,9 +165,7 @@ def read_dictionary():
         infile.close()
         return dictionary
     except:
-        raise FileNotFoundError('Dictionary file not present in the current folder!,'
-                                'make sure to download it from github repository, '
-                                'or create it by choosing "y" for updating the database.')
+        raise FileNotFoundError(config.ERRORS_MESSAGES['read_dictionary'])
 
 
 ##############################
@@ -195,16 +190,19 @@ def choose_coin():
 def main():
     """ updates the dictionary containing historical data for each cryptocurrency(optional) and prompts the user to
             choose one of them, then displays its data """
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-u', '--u', help='Update database', action='store_true')
-    parser.add_argument('-c', '--c', help='Choose coin', action='store_true')
-    args = parser.parse_args()
-    if args.u:
-        curr = get_100_currencies()
-        update_all_coins_data(curr)
-        create_dictionary(curr)
-    if args.c:
-        choose_coin()
+    try:
+        parser = argparse.ArgumentParser()
+        parser.add_argument('-u', '--u', help='Update database', action='store_true')
+        parser.add_argument('-c', '--c', help='Choose coin', action='store_true')
+        args = parser.parse_args()
+        if args.u:
+            curr = get_100_currencies()
+            update_all_coins_data(curr)
+            create_dictionary(curr)
+        if args.c:
+            choose_coin()
+    except Exception as E:
+        print(E)
 
 ##############################
 
