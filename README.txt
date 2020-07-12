@@ -32,6 +32,8 @@ otherwise, choose no ('n') to pick a currency and display its data
 
 
 2.RUN "python ms2.py" with relevant arguments:
+This script updates the information of all coins in a designated mysql server for easier deployment
+
 
 usage: ms2.py [-h] password db_name
 
