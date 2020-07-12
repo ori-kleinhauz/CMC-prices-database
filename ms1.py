@@ -43,8 +43,8 @@ def download_coin_data(coin, end_date):
     html = f'{config.CURRENCIES_PAGE}{coin}{config.CURRENCY_START}{end_date}'
     try:
         page_get = requests.get(html)
-        Path("pickles\\").mkdir(parents=True, exist_ok=True)
-        pickle_name = 'pickles\\' + str(coin)
+        Path(f'{config.PICKLE_FOLDER}\\').mkdir(parents=True, exist_ok=True)
+        pickle_name = f'{config.PICKLE_FOLDER}\\{str(coin)}'
         print(pickle_name.lower())
         outfile = open(pickle_name, 'wb')
         pickle.dump(page_get, outfile)
@@ -63,7 +63,7 @@ def update_all_coins_data(currencies_to_update):
 
 def load_coin_from_file(coin):
     """load content from saved pickle file"""
-    pickle_name = 'pickles\\' + str(coin)
+    pickle_name = f'{config.PICKLE_FOLDER}\\{str(coin)}'
     infile = open(pickle_name.lower(), 'rb')
     page_get = pickle.load(infile)
     infile.close()
@@ -133,16 +133,16 @@ def create_dataframe(coin):
 
 def create_dictionary(curr):
     """ creates a dictionary of dataframes for each of the 100 cryptocurrencies scraped"""
-    files_list = os.listdir('pickles')
+    files_list = os.listdir(config.PICKLE_FOLDER)
     curs = {k: v for k, v in curr.items() if v.lower() in files_list}
     dictionary = {}
     print('Creating Dictionary...')
     for key, value in tqdm(curs.items()):
         try:
             dictionary[key] = create_dataframe(value.lower())
-        except:
-            raise ProcessLookupError(f'{config.ERRORS_MESSAGES["create_dict"]}')
-    pickle_name = config.DICTIONARY_NAME
+        except Exception as E:
+            raise E
+    pickle_name = f'\\{config.DICTIONARY_NAME}'
     outfile = open(pickle_name, 'wb')
     pickle.dump(dictionary, outfile)
     outfile.close()
@@ -159,7 +159,7 @@ def create_dictionary(curr):
 def read_dictionary():
     """load content from saved pickle file"""
     try:
-        pickle_name = 'dict.data'
+        pickle_name = config.DICTIONARY_NAME
         infile = open(pickle_name, 'rb')
         dictionary = pickle.load(infile)
         infile.close()
