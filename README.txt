@@ -2,10 +2,14 @@ Authors:
 Ori Kleinhauz
 Yuval Herman
 
-Files in repository
-ms1.py - python script
-data.dict - database
+Files in this repository:
+ms1.py - python script for scraping coin data and saving it to a binary file in the projects directory.
+ms2.py - python script for deploying all coin database to a mysql server for easier managment.
+DMP-MS2_ERD.pdf - decription of the sql database structure.
+data.dict - database in binary mode.
 requirements.txt
+config.py
+
 
 Description:
 This project offers complete historical access to worldwide average prices of the 100 highest traded crypto currencies (listed by market cap), according to http://www.coinmarketcap.com (hereinafter: the website).
