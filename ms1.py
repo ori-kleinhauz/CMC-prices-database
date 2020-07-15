@@ -6,7 +6,7 @@ Ori Kleinhauz
 Yuval Herman
 
 """
-
+import grequests
 import requests
 from bs4 import BeautifulSoup
 import pickle
@@ -15,7 +15,6 @@ from datetime import datetime
 import pandas as pd
 from pathlib import Path
 import os
-from time import sleep
 import shutil
 from tqdm import tqdm
 import sys
@@ -34,31 +33,26 @@ def get_100_currencies():
     for l in tqdm(links):
         if 'currencies' in l['href']:
             curr[l['title']] = l['href'].split('/')[2]
-    sleep(config.SLEEP_INTERVAL)
     return curr
-
-
-def download_coin_data(coin, end_date):
-    """downloads the content online from CMC and saves to pickle file"""
-    html = f'{config.CURRENCIES_PAGE}{coin}{config.CURRENCY_START}{end_date}'
-    try:
-        page_get = requests.get(html)
-        Path(f'{config.PICKLE_FOLDER}\\').mkdir(parents=True, exist_ok=True)
-        pickle_name = f'{config.PICKLE_FOLDER}\\{str(coin)}'
-        print(pickle_name.lower())
-        outfile = open(pickle_name, 'wb')
-        pickle.dump(page_get, outfile)
-        outfile.close()
-    except ConnectionError:
-        print(f'{config.ERRORS_MESSAGES["Connection_failed"]}')
 
 
 def update_all_coins_data(currencies_to_update):
     """updates the database of pickle file for the currencies provided"""
     current_day = str(datetime.now().strftime("%Y%m%d"))
-    for coin, url in tqdm(currencies_to_update.items()):
-        download_coin_data(url, current_day)
-        sleep(config.SLEEP_INTERVAL)
+    coin_list = list(currencies_to_update.keys())
+    links_list = [f'{config.CURRENCIES_PAGE}{value}{config.CURRENCY_START}{current_day}' for value in
+                  currencies_to_update.values()]
+    page_responses = [grequests.get(link) for link in links_list]
+    Path(f'{config.PICKLE_FOLDER}\\').mkdir(parents=True, exist_ok=True)
+    for x, url in enumerate(tqdm(grequests.map(page_responses))):
+        try:
+            pickle_name = f'{config.PICKLE_FOLDER}\\{str(coin_list[x])}'
+            print(pickle_name.lower())
+            outfile = open(pickle_name, 'wb')
+            pickle.dump(url, outfile)
+            outfile.close()
+        except ConnectionError:
+            print(f'{config.ERRORS_MESSAGES["Connection_failed"]}')
 
 
 def load_coin_from_file(coin):

@@ -3,7 +3,7 @@ import numpy as np
 from ms1 import read_dictionary
 import argparse
 from tqdm import tqdm
-
+import config
 
 # used to prevent AttributeError: 'numpy.float64' object has no attribute 'translate' when inserting values from
 # dataframe to db
@@ -52,25 +52,15 @@ def create_tables(con):
      uses unique primary keys for each coin and each rate entry,
      and a foreign one-to-many key from the coins table to the rates table"""
     with con.cursor() as cur:
-        cur.execute("create table coins (id int primary key auto_increment, name char(255))")
-        cur.execute("""create table rates
-                        (id int primary key auto_increment, 
-                        coin_id int, 
-                        date date, 
-                        open float, 
-                        high float, 
-                        low float,
-                        close float, 
-                        volume float, 
-                        cap float,
-                        foreign key (coin_id) references coins(id))""")
+        cur.execute(config.CREATE_TABLE_DATES)
+        cur.execute(config.CREATE_TABLE_RATES)
 
 
 def insert_coins(con, dfs):
     """populates the coins table using the dataframes dictionary created in ms1.py"""
     with con.cursor() as cur:
         for n in tqdm(dfs.keys()):
-            cur.execute("insert into coins (name) values (%s)", n)
+            cur.execute(config.INSERT_NEW_COIN, n)
         con.commit()
 
 
@@ -79,8 +69,7 @@ def insert_rates(con, dfs):
     with con.cursor() as cur:
         for i, df in enumerate(dfs.values()):
             for j in tqdm(range(len(df))):
-                cur.execute("insert into rates (coin_id, date, open, high, low,  close, volume, cap)"
-                            "values (%s, %s, %s, %s, %s, %s, %s, %s)",
+                cur.execute(config.INSERT_NEW_RATE,
                             (i + 1,
                              dfs[list(dfs.keys())[i]]['Date'][j],
                              dfs[list(dfs.keys())[i]]['Open'][j],
@@ -100,16 +89,15 @@ def update_rates(con, dfs):
     their respective id's into the rates table, in case the top100 coins order was changed in the scraped website """
     with con.cursor() as cur:
         for (n, df) in dfs.items():
-            cur.execute("select max(date) from rates join coins on rates.coin_id=coins.id where name=(%s)", n)
+            cur.execute(config.GET_MAX_DATE_IN_DB, n)
             result = cur.fetchall()
             max_date = result[0]
-            cur.execute("select id from coins where name=(%s)", n)
+            cur.execute(config.GET_COIN_ID_IN_DB, n)
             result = cur.fetchall()
             cid = result[0]
             df_new = df[df['Date'] > list(max_date.values())[0]]
             for j in tqdm(range(len(df_new))):
-                cur.execute("insert into rates (coin_id, date, open, high, low,  close, volume, cap)"
-                            "values (%s, %s, %s, %s, %s, %s, %s, %s)",
+                cur.execute(config.INSERT_NEW_RATE,
                             (list(cid.values())[0],
                              df_new['Date'][j],
                              df_new['Open'][j],
