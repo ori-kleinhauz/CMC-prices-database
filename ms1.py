@@ -30,7 +30,7 @@ def get_100_currencies():
     soup = BeautifulSoup(page_get.content, 'html.parser')
     curr = {}
     links = [l for l in soup.findAll("a", href=True, title=True, class_='cmc-link')]
-    for l in tqdm(links):
+    for l in links:
         if 'currencies' in l['href']:
             curr[l['title']] = l['href'].split('/')[2]
     return curr
