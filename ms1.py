@@ -44,12 +44,12 @@ def update_all_coins_data(currencies_to_update):
                   currencies_to_update.values()]
     page_responses = [grequests.get(link) for link in links_list]
     Path(f'{config.PICKLE_FOLDER}\\').mkdir(parents=True, exist_ok=True)
-    for x, url in enumerate(tqdm(grequests.map(page_responses))):
+    for x, soup in enumerate(grequests.map(page_responses)):
         try:
             pickle_name = f'{config.PICKLE_FOLDER}\\{str(coin_list[x])}'
             print(pickle_name.lower())
             outfile = open(pickle_name, 'wb')
-            pickle.dump(url, outfile)
+            pickle.dump(soup, outfile)
             outfile.close()
         except ConnectionError:
             print(f'{config.ERRORS_MESSAGES["Connection_failed"]}')
