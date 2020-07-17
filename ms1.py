@@ -6,6 +6,7 @@ Ori Kleinhauz
 Yuval Herman
 
 """
+from Class_DB import DB
 import grequests
 import requests
 from bs4 import BeautifulSoup
@@ -180,6 +181,24 @@ def choose_coin():
             print(coin_to_display, ' - is not a coin in the available database')
 
 
+def save_class_to_pickle(dict1):
+    pickle_name = f'\\{config.DICTIONARY_NAME}_class'
+    outfile = open(pickle_name, 'wb')
+    pickle.dump(dict1, outfile)
+    outfile.close()
+
+
+def load_class():
+    try:
+        pickle_name = f'{config.DICTIONARY_NAME}_class'
+        infile = open(pickle_name, 'rb')
+        dictionary = pickle.load(infile)
+        infile.close()
+        return dictionary
+    except:
+        raise FileNotFoundError(config.ERRORS_MESSAGES['read_class'])
+
+
 ##############################
 def main():
     """ updates the dictionary containing historical data for each cryptocurrency(optional) and prompts the user to
@@ -187,14 +206,27 @@ def main():
     try:
         parser = argparse.ArgumentParser()
         parser.add_argument('-u', '--u', help='Update database', action='store_true')
-        parser.add_argument('-c', '--c', help='Choose coin', action='store_true')
+        parser.add_argument('-coindate', '--coindate', help='get value of a coin on a specific date', action='store_true')
+        parser.add_argument('-c', '--c', help='show_available_command', action='store_true')
+        parser.add_argument('-c', '--c', help='show_available_command', action='store_true')
+        parser.add_argument('-c', '--c', help='show_available_command', action='store_true')
+        parser.add_argument('-c', '--c', help='show_available_command', action='store_true')
+        parser.add_argument('-c', '--c', help='show_available_command', action='store_true')
+
         args = parser.parse_args()
         if args.u:
             curr = get_100_currencies()
             update_all_coins_data(curr)
             create_dictionary(curr)
-        if args.c:
-            choose_coin()
+            dictionary = DB(read_dictionary())
+            save_class_to_pickle(dictionary)
+        else:
+            dictionary = load_class()
+            if args.coindate:
+                dictionary.get_coin_date_value
+
+
+            dictionary.show_available_command()
     except Exception as E:
         print(E)
 

@@ -11,7 +11,8 @@ ERRORS_MESSAGES = {'Connection_failed': 'error locating {coin} data. check possi
                    'delete_pickles': 'Directory not found / could not delete folder',
                    'read_dictionary': 'Dictionary file not present in the current folder!,'
                                       'make sure to download it from github repository, '
-                                      'or create it by choosing "y" for updating the database'}
+                                      'or create it by choosing "y" for updating the database',
+                   'read_class': 'class object does not exist'}
 DICTIONARY_NAME = 'dict.data'
 CREATE_TABLE_DATES = "create table coins (id int primary key auto_increment, name char(255))"
 CREATE_TABLE_RATES = """create table rates
