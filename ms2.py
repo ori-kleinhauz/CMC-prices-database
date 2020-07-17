@@ -1,4 +1,4 @@
-from ms1 import read_dictionary
+from ms1 import load_class
 import argparse
 from Class_DB import DB
 
@@ -10,7 +10,7 @@ def main():
     parser.add_argument('password', help='mysql password', type=str)
     parser.add_argument('db_name', help='database name', type=str)
     args = parser.parse_args()
-    dictionary = DB(read_dictionary())
+    dictionary = load_class()
     con, empty = dictionary.create_connection(args.db_name, args.password)
     if not empty:
         dictionary.update_rates(con)

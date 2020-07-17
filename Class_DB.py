@@ -1,10 +1,10 @@
-from ms1 import read_dictionary, get_100_currencies, update_all_coins_data, create_dictionary
 import pandas as pd
 import os
 import config
 from tqdm import tqdm
 import pymysql.cursors
 import numpy as np
+
 # used to prevent AttributeError: 'numpy.float64' object has no attribute 'translate' when inserting values from
 # dataframe to db
 pymysql.converters.encoders[np.float64] = pymysql.converters.escape_float
@@ -12,17 +12,9 @@ pymysql.converters.conversions = pymysql.converters.encoders.copy()
 pymysql.converters.conversions.update(pymysql.converters.decoders)
 
 
-def __delete_dictionary_file__():
-    try:
-        os.remove("dict.data")
-    except:
-        FileNotFoundError("The file does not exist")
-
-
 class DB:
     def __init__(self, dictionary):
         self.dictionary = dictionary
-        __delete_dictionary_file__()
 
     def get_coin_date_value(self, coin, date):
         if coin not in self.dictionary.keys():
@@ -159,10 +151,10 @@ class DB:
         with con.cursor() as cur:
             cur.execute(f"create database {name}")
 
-if __name__ == '__main__':
-    dict1 = DB(read_dictionary())
-    print(dict1.get_coin_date_value('Bitcoin', '10-10-2017'))
-    print(dict1.get_all_coin_data('Bitcoin'))
-    print(dict1.get_last_date_per_coin('Bitcoin'))
-    print(dict1.get_prices_between_dates('Bitcoin', '01012019', '31/12/2019'))
-    print(dict1.get_coin_len_records('Bitcoin'))
+# if __name__ == '__main__':
+#     dict1 = DB(read_dictionary())
+#     print(dict1.get_coin_date_value('Bitcoin', '10-10-2017'))
+#     print(dict1.get_all_coin_data('Bitcoin'))
+#     print(dict1.get_last_date_per_coin('Bitcoin'))
+#     print(dict1.get_prices_between_dates('Bitcoin', '01012019', '31/12/2019'))
+#     print(dict1.get_coin_len_records('Bitcoin'))

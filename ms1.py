@@ -128,69 +128,65 @@ def create_dataframe(coin):
 
 def create_dictionary(curr):
     """ creates a dictionary of dataframes for each of the 100 cryptocurrencies scraped"""
-    files_list = os.listdir(config.PICKLE_FOLDER)
-    curs = {k: v for k, v in curr.items() if v.lower() in files_list}
     dictionary = {}
     print('Creating Dictionary...')
-    for key, value in tqdm(curs.items()):
+    for key in tqdm(curr.keys()):
         try:
-            dictionary[key] = create_dataframe(value.lower())
+            dictionary[key] = create_dataframe(key)
         except Exception as E:
             raise E
-    pickle_name = f'\\{config.DICTIONARY_NAME}'
-    outfile = open(pickle_name, 'wb')
-    pickle.dump(dictionary, outfile)
-    outfile.close()
     try:
         shutil.rmtree(config.PICKLE_FOLDER, ignore_errors=True)
     except:
         raise NotADirectoryError(f'{config.ERRORS_MESSAGES["delete_pickles"]}')
 
+    return dictionary
+
 
 ############################
 
 
 ############################
-def read_dictionary():
-    """load content from saved pickle file"""
-    try:
-        pickle_name = config.DICTIONARY_NAME
-        infile = open(pickle_name, 'rb')
-        dictionary = pickle.load(infile)
-        infile.close()
-        return dictionary
-    except:
-        raise FileNotFoundError(config.ERRORS_MESSAGES['read_dictionary'])
+# def read_dictionary():
+#     """load content from saved pickle file"""
+#     try:
+#         pickle_name = config.DICTIONARY_NAME
+#         infile = open(pickle_name, 'rb')
+#         dictionary = pickle.load(infile)
+#         infile.close()
+#         return dictionary
+#     except:
+#         raise FileNotFoundError(config.ERRORS_MESSAGES['read_dictionary'])
 
 
 ##############################
-def choose_coin():
-    """prompts the user to pick a currency from the dictionary and displays its data"""
-    dictionary = read_dictionary()
-    for counter, key in enumerate(dictionary.keys()):
-        print(counter + 1, ':', key)
-    print('---above is a list of keys for which historical information is available in the dictionary\n')
-    while True:
-        coin_to_display = input('\nPlease choose a coin from the above list to display its history (or press q to '
-                                'exit): ')
-        if coin_to_display == 'q':
-            sys.exit(0)
-        if coin_to_display in dictionary.keys():
-            print(coin_to_display, '\n', dictionary[coin_to_display])
-        else:
-            print(coin_to_display, ' - is not a coin in the available database')
+# def choose_coin():
+#     """prompts the user to pick a currency from the dictionary and displays its data"""
+#     dictionary = read_dictionary()
+#     for counter, key in enumerate(dictionary.keys()):
+#         print(counter + 1, ':', key)
+#     print('---above is a list of keys for which historical information is available in the dictionary\n')
+#     while True:
+#         coin_to_display = input('\nPlease choose a coin from the above list to display its history (or press q to '
+#                                 'exit): ')
+#         if coin_to_display == 'q':
+#             sys.exit(0)
+#         if coin_to_display in dictionary.keys():
+#             print(coin_to_display, '\n', dictionary[coin_to_display])
+#         else:
+#             print(coin_to_display, ' - is not a coin in the available database')
 
 
-def save_class_to_pickle(dict1):
-    pickle_name = f'\\{config.DICTIONARY_NAME}_class'
+def save_class_to_pickle(dictionary):
+    pickle_name = f'{config.DICTIONARY_NAME}'
     outfile = open(pickle_name, 'wb')
-    pickle.dump(dict1, outfile)
+    pickle.dump(dictionary, outfile)
     outfile.close()
 
 
 def load_class():
     try:
-        pickle_name = f'{config.DICTIONARY_NAME}_class'
+        pickle_name = f'{config.DICTIONARY_NAME}'
         infile = open(pickle_name, 'rb')
         dictionary = pickle.load(infile)
         infile.close()
@@ -208,24 +204,17 @@ def main():
         parser.add_argument('-u', '--u', help='Update database', action='store_true')
         parser.add_argument('-coindate', '--coindate', help='get value of a coin on a specific date', action='store_true')
         parser.add_argument('-c', '--c', help='show_available_command', action='store_true')
-        parser.add_argument('-c', '--c', help='show_available_command', action='store_true')
-        parser.add_argument('-c', '--c', help='show_available_command', action='store_true')
-        parser.add_argument('-c', '--c', help='show_available_command', action='store_true')
-        parser.add_argument('-c', '--c', help='show_available_command', action='store_true')
 
         args = parser.parse_args()
         if args.u:
             curr = get_100_currencies()
             update_all_coins_data(curr)
-            create_dictionary(curr)
-            dictionary = DB(read_dictionary())
+            dictionary = DB(create_dictionary(curr))
             save_class_to_pickle(dictionary)
         else:
             dictionary = load_class()
             if args.coindate:
                 dictionary.get_coin_date_value
-
-
             dictionary.show_available_command()
     except Exception as E:
         print(E)
