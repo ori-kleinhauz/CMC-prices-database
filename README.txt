@@ -3,10 +3,9 @@ Ori Kleinhauz
 Yuval Herman
 
 Files in this repository:
-ms1.py - python script for scraping coin data and saving it to a binary file in the projects directory.
-ms2.py - python script for deploying all coin database to a mysql server for easier managment.
+ms1.py - main script, run with arguments.
 DMP-MS2_ERD.pdf - decription of the sql database structure.
-data.dict - database in binary mode.
+data.dict - class object database saved in binary mode.
 requirements.txt
 config.py
 
