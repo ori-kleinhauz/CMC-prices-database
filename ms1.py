@@ -6,6 +6,7 @@ Ori Kleinhauz
 Yuval Herman
 
 """
+import numpy as np
 from Class_DB import DB
 import grequests
 import requests
@@ -201,9 +202,18 @@ def main():
             choose one of them, then displays its data """
     try:
         parser = argparse.ArgumentParser()
-        parser.add_argument('-u', '--u', help='Update database', action='store_true')
-        parser.add_argument('-coindate', '--coindate', help='get value of a coin on a specific date', action='store_true')
-        parser.add_argument('-c', '--c', help='show_available_command', action='store_true')
+        parser.add_argument('-c', '--c', help='show available coins', action='store_true')
+        parser.add_argument('-u', '--u', help='Update Database locally', action='store_true')
+        parser.add_argument('-u_db', nargs=2, metavar=('password', 'DB'),
+                            help='Update mysql DB')
+        parser.add_argument('-price', nargs=2, metavar=('coin', 'date'),
+                            help='get coin value by date')
+        parser.add_argument('-all_prices', nargs=1, metavar=('coin'),
+                            help='get all coin history')
+        parser.add_argument('-last_date', action='store_true', help='get last date in database')
+
+        parser.add_argument('-coin_b_dates', nargs=3, metavar=('coin', 'begin', 'end'),
+                            help='get coin last date in database')
 
         args = parser.parse_args()
         if args.u:
@@ -211,13 +221,43 @@ def main():
             update_all_coins_data(curr)
             dictionary = DB(create_dictionary(curr))
             save_class_to_pickle(dictionary)
-        else:
+
+        if args.u_db:
             dictionary = load_class()
-            if args.coindate:
-                dictionary.get_coin_date_value
-            dictionary.show_available_command()
+            con, empty = dictionary.create_connection(args.u_db[1], args.u_db[0])
+            if not empty:
+                dictionary.update_rates(con)
+            else:
+                dictionary.create_tables(con)
+                dictionary.insert_coins(con)
+                dictionary.insert_rates(con)
+
+        if args.c:
+            dictionary = load_class()
+            coins = sorted(list(dictionary.get_available_coins()))
+            mat = np.array(coins).reshape(20, -1)
+            print(mat)
+
+        if args.price:
+            dictionary = load_class()
+            print(dictionary.get_coin_date_value(args.price[0], args.price[1]))
+
+        if args.all_prices:
+            dictionary = load_class()
+            print(dictionary.get_all_coin_data(args.all_prices[0]))
+
+        if args.coin_b_dates:
+            dictionary = load_class()
+            print(dictionary.get_prices_between_dates(args.coin_last_date[0], args.coin_last_date[1],
+                                                    args.coin_last_date[2]))
+
+        if args.last_date:
+            dictionary = load_class()
+            print(dictionary.get_last_date())
+
     except Exception as E:
         print(E)
+
 
 ##############################
 

@@ -1,5 +1,4 @@
 import pandas as pd
-import os
 import config
 from tqdm import tqdm
 import pymysql.cursors
@@ -18,7 +17,8 @@ class DB:
 
     def get_coin_date_value(self, coin, date):
         if coin not in self.dictionary.keys():
-            return 'coin supplied not in database'
+            print('coin supplied not in database')
+            exit()
         else:
             try:
                 df = self.dictionary.get(coin)
@@ -26,22 +26,30 @@ class DB:
             except:
                 ValueError('Date was not supplied as expected. please use either DD-MM-YYYY/ YYYYMMDD / DD/MM/YYYY')
 
+    def get_available_coins(self):
+        if bool(self.dictionary):
+            return self.dictionary.keys()
+        else:
+            print('the local dictionary is empty')
+            exit()
+
     def get_all_coin_data(self, coin):
         if coin not in self.dictionary.keys():
-            return 'coin supplied not in database'
+            print('coin supplied not in database')
+            exit()
         else:
             return self.dictionary.get(coin)
 
-    def get_last_date_per_coin(self, coin):
-        if coin not in self.dictionary.keys():
-            return 'coin supplied not in database'
+    def get_last_date(self):
+        if bool(self.dictionary):
+            return self.dictionary.get('Bitcoin')['Date'].max()
         else:
-            df = self.dictionary.get(coin)
-            return df['Date'].max()
+            return 'the local dictionary is empty'
 
     def get_prices_between_dates(self, coin, begin, end):
         if coin not in self.dictionary.keys():
-            return 'coin supplied not in database'
+            print('coin supplied not in database')
+            exit()
         else:
             try:
                 df = self.dictionary.get(coin)
@@ -54,7 +62,8 @@ class DB:
 
     def get_coin_len_records(self, coin):
         if coin not in self.dictionary.keys():
-            return 'coin supplied not in database'
+            print('coin supplied not in database')
+            exit()
         else:
             return len(self.dictionary.get(coin))
 
