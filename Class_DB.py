@@ -48,13 +48,12 @@ class DB:
 
     def get_prices_between_dates(self, coin, begin, end):
         if coin not in self.dictionary.keys():
-            print('coin supplied not in database')
+            print('coin supplied not in database, please check Uppercase coins, as supplied  at -c command')
             exit()
         else:
             try:
                 df = self.dictionary.get(coin)
                 cond = (df['Date'] >= pd.to_datetime(begin)) & (df['Date'] <= pd.to_datetime(end))
-                print(cond)
                 return df[cond]
             except:
                 ValueError('Dates were not supplied as expected. please use either DD-MM-YYYY/ YYYYMMDD / DD/MM/YYYY'

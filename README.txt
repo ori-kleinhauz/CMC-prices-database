@@ -18,37 +18,37 @@ This project uses scrapping technics to collect its data, NOT based upon any kin
 This is naturally great news to anyone wishes to built a 100 crypto currencies historical database on his own machine/server.
 
 Notifications:
-This project consists of two scripts for its operations:
+The script offers a variety of command line options:
 
-1.RUN "python ms2.py" with relevant arguments:
-
-usage: ms1.py [-h] [-u] [-c]
+usage: ms1.py [-h] [-c] [-u] [-u_db password DB] [-price coin date] [-all_prices coin] [-last_date] [-coin_b_dates coin begin end]
 
 optional arguments:
-  -h, --help  show this help message and exit
-  -u, --u     Update database
-  -c, --c     Choose coin
-
-As default, the script searches for the file 'dict.data' in the project's directory and offers historical rates per the user's input from it.
-
-In cases when the file is not present, or needs an update in your perspective, please choose yes ('y') when prompted by the program to update(create) the file.
-otherwise, choose no ('n') to pick a currency and display its data
-
-
-2.RUN "python ms2.py" with relevant arguments:
-This script updates the information of all coins in a designated mysql server for easier deployment
+  -h, --help                    show this help message and exit
+  -c, --c                       show available coins
+  -u, --u                       Update Database locally
+  -u_db password DB             Update mysql DB
+  -price coin date              get coin value by date
+  -all_prices coin              get all coin history
+  -last_date                    get last date in database
+  -coin_b_dates coin begin end  get coin last date in database
 
 
-usage: ms2.py [-h] password db_name
+As default, the script requires arguments using the command line interface in order to work according to users requirements.
+It can operate on both small scale local machine - creates local class object to answer all types of Coin queries,
+as well as creating and updating a server side mysql database copy .
 
-positional arguments:
-  password    mysql password
-  db_name     database name
+-u: scrape, and load to class object all 100 coin data (-u)
 
-optional arguments:
-  -h, --help  show this help message and exit
+-u_db: copy all data to a mysql database (-u_db, password, Database name)
+
+-price: use this argument to get a coin value per date supplied (-price, coin, date)
+
+-all_prices: use this argument to get all values of a coin's history (-all_prices, coin)
+
+-last_date: use this argument to get the last date the database (local class object) is updated (-last_date)
+
+-coin_b_dates: use this argument to get the values of a coin supplied between two dates (-coin_b_dates, coin, bgein, end)
 
 
-*** Be aware that every update of the database takes ~30 minutes to complete, due to limited requests\min the website allows (at least when using single IP for all requests).
 
 enjoy!

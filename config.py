@@ -1,7 +1,6 @@
 HOMEPAGE = 'https://coinmarketcap.com/'
 CURRENCIES_PAGE = 'https://coinmarketcap.com/currencies/'
 CURRENCY_START = '/historical-data/?start=20130429&end='
-SLEEP_INTERVAL = 15
 PICKLE_FOLDER = 'pickles'
 COL_NAMES = ['Date', 'Open', 'High', 'Low', 'Close', 'Volume', 'Cap']
 ERRORS_MESSAGES = {'Connection_failed': 'error locating {coin} data. check possible name mismatch on CMC',
@@ -31,3 +30,5 @@ INSERT_NEW_RATE = "insert into rates (coin_id, date, open, high, low,  close, vo
                   "values (%s, %s, %s, %s, %s, %s, %s, %s)"
 GET_MAX_DATE_IN_DB = "select max(date) from rates join coins on rates.coin_id=coins.id where name=(%s)"
 GET_COIN_ID_IN_DB = "select id from coins where name=(%s)"
+
+

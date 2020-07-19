@@ -16,10 +16,8 @@ import datetime
 from datetime import datetime
 import pandas as pd
 from pathlib import Path
-import os
 import shutil
 from tqdm import tqdm
-import sys
 import argparse
 import config
 
@@ -31,7 +29,7 @@ def get_100_currencies():
     page_get = requests.get(config.HOMEPAGE)
     soup = BeautifulSoup(page_get.content, 'html.parser')
     curr = {}
-    links = [l for l in soup.findAll("a", href=True, title=True, class_='cmc-link')]
+    links = [l for l in soup.findAll('a', href=True, title=True, class_='cmc-link')]
     for l in links:
         if 'currencies' in l['href']:
             curr[l['title']] = l['href'].split('/')[2]
@@ -144,40 +142,6 @@ def create_dictionary(curr):
     return dictionary
 
 
-############################
-
-
-############################
-# def read_dictionary():
-#     """load content from saved pickle file"""
-#     try:
-#         pickle_name = config.DICTIONARY_NAME
-#         infile = open(pickle_name, 'rb')
-#         dictionary = pickle.load(infile)
-#         infile.close()
-#         return dictionary
-#     except:
-#         raise FileNotFoundError(config.ERRORS_MESSAGES['read_dictionary'])
-
-
-##############################
-# def choose_coin():
-#     """prompts the user to pick a currency from the dictionary and displays its data"""
-#     dictionary = read_dictionary()
-#     for counter, key in enumerate(dictionary.keys()):
-#         print(counter + 1, ':', key)
-#     print('---above is a list of keys for which historical information is available in the dictionary\n')
-#     while True:
-#         coin_to_display = input('\nPlease choose a coin from the above list to display its history (or press q to '
-#                                 'exit): ')
-#         if coin_to_display == 'q':
-#             sys.exit(0)
-#         if coin_to_display in dictionary.keys():
-#             print(coin_to_display, '\n', dictionary[coin_to_display])
-#         else:
-#             print(coin_to_display, ' - is not a coin in the available database')
-
-
 def save_class_to_pickle(dictionary):
     pickle_name = f'{config.DICTIONARY_NAME}'
     outfile = open(pickle_name, 'wb')
@@ -198,8 +162,8 @@ def load_class():
 
 ##############################
 def main():
-    """ updates the dictionary containing historical data for each cryptocurrency(optional) and prompts the user to
-            choose one of them, then displays its data """
+    """ offers the user ability to see available coins, update local database, update mysql database, last_date in database,
+     get coin history, by date, by a gap of dates, etc."""
     try:
         parser = argparse.ArgumentParser()
         parser.add_argument('-c', '--c', help='show available coins', action='store_true')
@@ -208,8 +172,7 @@ def main():
                             help='Update mysql DB')
         parser.add_argument('-price', nargs=2, metavar=('coin', 'date'),
                             help='get coin value by date')
-        parser.add_argument('-all_prices', nargs=1, metavar=('coin'),
-                            help='get all coin history')
+        parser.add_argument('-all_prices', nargs=1, metavar=('coin'), help='get all coin history')
         parser.add_argument('-last_date', action='store_true', help='get last date in database')
 
         parser.add_argument('-coin_b_dates', nargs=3, metavar=('coin', 'begin', 'end'),
@@ -248,8 +211,8 @@ def main():
 
         if args.coin_b_dates:
             dictionary = load_class()
-            print(dictionary.get_prices_between_dates(args.coin_last_date[0], args.coin_last_date[1],
-                                                    args.coin_last_date[2]))
+            print(dictionary.get_prices_between_dates(args.coin_b_dates[0], args.coin_b_dates[1],
+                                                      args.coin_b_dates[2]))
 
         if args.last_date:
             dictionary = load_class()
