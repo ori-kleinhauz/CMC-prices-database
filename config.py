@@ -12,4 +12,4 @@ ERRORS_MESSAGES = {'Connection_failed': 'error locating {coin} data. check possi
                    'read_dictionary': 'Dictionary file not present in the current folder!,'
                                 'make sure to download it from github repository, '
                                 'or create it by choosing "y" for updating the database'}
-DICTIONARY_NAME = 'dict.data'
+DICTIONARY_NAME = 'dfs_dict.p'

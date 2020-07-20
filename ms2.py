@@ -131,7 +131,7 @@ def main():
     parser.add_argument('password', help='mysql password', type=str)
     parser.add_argument('db_name', help='database name', type=str)
     args = parser.parse_args()
-    df_dict = read_dictionary()
+    dfs_dict = read_dictionary()
     con, empty = create_connection(args.db_name, args.password)
     if not empty:
         update_rates(con, df_dict)
