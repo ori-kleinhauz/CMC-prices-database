@@ -18,6 +18,7 @@ from tqdm import tqdm
 import sys
 import argparse
 import config
+import ms2
 
 
 class Scraper:
@@ -128,8 +129,16 @@ def main():
     args = parser.parse_args()
 
     try:
-
         dfs_dict = Dictionary.read_dictionary_from_pickle()
+        db = ms2.MySQL_DB(dfs_dict)
+        con, empty = ms2.MySQL_DB(dfs_dict).create_connection(args.udb[1], args.udb[0])
+        if args.udb:
+            if not empty:
+                    db.update_rates(con, dfs_dict)
+            else:
+                    db.create_tables(con)
+                    db.insert_coins(con, dfs_dict)
+                    db.insert_rates(con, dfs_dict)
         if args.udict:
             top_100_currencies = Scraper().get_100_currencies()
             links = Scraper().parse_100_currencies_links(top_100_currencies)
@@ -137,8 +146,7 @@ def main():
             Dictionary().save_dictionary_to_pickle(dfs_dict)
         if args.c:
             choose_coin(dfs_dict)
-        # if args.udb:
-        #
+
     except Exception as E:
         print(E)
 
