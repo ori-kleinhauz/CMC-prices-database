@@ -134,11 +134,11 @@ def main():
         con, empty = ms2.MySQL_DB(dfs_dict).create_connection(args.udb[1], args.udb[0])
         if args.udb:
             if not empty:
-                    db.update_rates(con, dfs_dict)
+                db.update_rates(con, dfs_dict)
             else:
-                    db.create_tables(con)
-                    db.insert_coins(con, dfs_dict)
-                    db.insert_rates(con, dfs_dict)
+                db.create_tables(con)
+                db.insert_coins(con, dfs_dict)
+                db.insert_rates(con, dfs_dict)
         if args.udict:
             top_100_currencies = Scraper().get_100_currencies()
             links = Scraper().parse_100_currencies_links(top_100_currencies)
