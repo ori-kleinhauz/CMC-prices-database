@@ -1,5 +1,5 @@
-import pymysql.cursors
 import numpy as np
+import pymysql.cursors
 from tqdm import tqdm
 
 # used to prevent AttributeError: 'numpy.float64' object has no attribute 'translate' when inserting values from
@@ -80,7 +80,7 @@ class MySQL_DB:
         """ searches for missing dates per coin in the rates table and adds to it those entries from the respective
         dataframe in the dataframes dictionary. gets the coin names from the dataframes dictionary and writes their
         respective id's from the coins table into the rates table. if the rates table is empty (as is the case for a
-        new db), or a new coin was added to the coins table, it will simplv add the entire dataframe(s) """
+        new db), or a new coin was added to the coins table, it will add the entire dataframe(s) """
         with con.cursor() as cur:
             for n, df in dfs.items():
                 cur.execute("select id from coins where name=(%s)", n)
@@ -88,8 +88,8 @@ class MySQL_DB:
                 coin_id = result[0]['id']
                 cur.execute("select distinct(date) from rates where coin_id = (%s)", coin_id)
                 result = cur.fetchall()
-                df_missing = df[~df['Date'].isin([r['date'] for r in result])]
-                if not df_missing.empty:
+                df = df[~df['Date'].isin([r['date'] for r in result])]
+                if not df.empty:
                     for j in tqdm(df.index):
                         cur.execute("insert into rates (coin_id, date, open, high, low,  close, volume, cap)"
                                     "values (%s, %s, %s, %s, %s, %s, %s, %s)",
