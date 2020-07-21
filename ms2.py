@@ -79,7 +79,8 @@ class MySQL_DB:
     def insert_rates(self, con, dfs):
         """ searches for missing dates per coin in the rates table and adds to it those entries from the respective
         dataframe in the dataframes dictionary. gets the coin names from the dataframes dictionary and writes their
-        respective id's from the coins table into the rates table."""
+        respective id's from the coins table into the rates table. if the rates table is empty (as is the case for a
+        new db), or a new coin was added to the coins table, it will simplv add the entire dataframe(s) """
         with con.cursor() as cur:
             for n, df in dfs.items():
                 cur.execute("select id from coins where name=(%s)", n)
@@ -90,31 +91,34 @@ class MySQL_DB:
                 df_missing = df[~df['Date'].isin([r['date'] for r in result])]
                 # print(coin_id, df_missing.index, df_missing)
                 if not df_missing.empty:
-                    for j in tqdm(range(len(df_missing))):
-                        cur.execute("insert into rates (coin_id, date, open, high, low,  close, volume, cap)"
-                                    "values (%s, %s, %s, %s, %s, %s, %s, %s)",
-                                    (coin_id,
-                                     df.iloc[j]['Date'],
-                                     df.iloc[j]['Open'],
-                                     df.iloc[j]['High'],
-                                     df.iloc[j]['Low'],
-                                     df.iloc[j]['Close'],
-                                     df.iloc[j]['Volume'],
-                                     df.iloc[j]['Cap']
-                                     )
-                                    )
-                        # for j in tqdm(df.index):
-                        #     # print(df['Date'][j])
-                        #     cur.execute("insert into rates (coin_id, date, open, high, low,  close, volume, cap)"
-                        #                 "values (%s, %s, %s, %s, %s, %s, %s, %s)",
-                        #                 (coin_id,
-                        #                  df['Date'][j],
-                        #                  df['Open'][j],
-                        #                  df['High'][j],
-                        #                  df['Low'][j],
-                        #                  df['Close'][j],
-                        #                  df['Volume'][j],
-                        #                  df['Cap'][j]
-                        #                  )
-                        #                 )
+                    # for j in tqdm(range(len(df_missing))):
+                    #     cur.execute("insert into rates (coin_id, date, open, high, low,  close, volume, cap)"
+                    #                 "values (%s, %s, %s, %s, %s, %s, %s, %s)",
+                    #                 (coin_id,
+                    #                  df.iloc[j]['Date'],
+                    #                  df.iloc[j]['Open'],
+                    #                  df.iloc[j]['High'],
+                    #                  df.iloc[j]['Low'],
+                    #                  df.iloc[j]['Close'],
+                    #                  df.iloc[j]['Volume'],
+                    #                  df.iloc[j]['Cap']
+                    #                  )
+                    #                 )
+                        for j in tqdm(df.index):
+                            # print(df['Date'][j])
+                            cur.execute("insert into rates (coin_id, date, open, high, low,  close, volume, cap)"
+                                        "values (%s, %s, %s, %s, %s, %s, %s, %s)",
+                                        (coin_id,
+                                         df['Date'][j],
+                                         df['Open'][j],
+                                         df['High'][j],
+                                         df['Low'][j],
+                                         df['Close'][j],
+                                         df['Volume'][j],
+                                         df['Cap'][j]
+                                         )
+                                        )
             con.commit()
+    def update_db(self, con, dfs):
+        self.insert_coins(con, dfs)
+        self.insert_rates(con, dfs)

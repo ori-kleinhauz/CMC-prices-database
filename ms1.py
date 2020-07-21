@@ -94,12 +94,15 @@ class Dictionary:
         return dfs_dict
 
     def save_dictionary_to_pickle(self, dict):
+        """ saves the dataframes dictionary to a pickle file"""
         pickle.dump(dict, open("dfs_dict.p", "wb"))
 
     def read_dictionary_from_pickle():
+        """ reads the dataframes dictionary from the pickle file"""
         with open('dfs_dict.p', 'rb') as pfile:
             dfs_dict = pickle.load(pfile)
             return dfs_dict
+
 
 def main():
     """ updates the dictionary containing historical data for each cryptocurrency(optional) and prompts the user to
@@ -116,12 +119,10 @@ def main():
         con, empty = ms2.MySQL_DB(dfs_dict).create_connection(args.udb[1], args.udb[0])
         if args.udb:
             if not empty:
-                db.insert_coins(con, dfs_dict)
-                db.insert_rates(con, dfs_dict)
+                db.update_db(con, dfs_dict)
             else:
                 db.create_tables(con)
-                db.insert_coins(con, dfs_dict)
-                db.insert_rates(con, dfs_dict)
+                db.update_db(con, dfs_dict)
         if args.udict:
             top_100_currencies = Scraper().get_100_currencies()
             links = Scraper().parse_100_currencies_links(top_100_currencies)
