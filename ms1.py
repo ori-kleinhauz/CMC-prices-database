@@ -15,7 +15,6 @@ from datetime import datetime
 import pandas as pd
 from time import sleep
 from tqdm import tqdm
-import sys
 import argparse
 import config
 import ms2
@@ -102,23 +101,6 @@ class Dictionary:
             dfs_dict = pickle.load(pfile)
             return dfs_dict
 
-
-def choose_coin(dfs_dict):
-    """prompts the user to pick a currency from the dictionary and displays its data"""
-    for counter, key in enumerate(dfs_dict.keys()):
-        print(counter + 1, ':', key)
-    print('---above is a list of keys for which historical information is available in the dictionary\n')
-    while True:
-        coin_to_display = input('\nPlease choose a coin from the above list to display its history (or press q to '
-                                'exit): ')
-        if coin_to_display == 'q':
-            sys.exit(0)
-        if coin_to_display in dfs_dict.keys():
-            print(coin_to_display, '\n', dfs_dict[coin_to_display])
-        else:
-            print(coin_to_display, ' - is not a coin in the available database')
-
-
 def main():
     """ updates the dictionary containing historical data for each cryptocurrency(optional) and prompts the user to
             choose one of them, then displays its data """
@@ -134,7 +116,8 @@ def main():
         con, empty = ms2.MySQL_DB(dfs_dict).create_connection(args.udb[1], args.udb[0])
         if args.udb:
             if not empty:
-                db.update_rates(con, dfs_dict)
+                db.insert_coins(con, dfs_dict)
+                db.insert_rates(con, dfs_dict)
             else:
                 db.create_tables(con)
                 db.insert_coins(con, dfs_dict)
@@ -144,14 +127,9 @@ def main():
             links = Scraper().parse_100_currencies_links(top_100_currencies)
             dfs_dict = Dictionary().create_dataframes_dictionary(top_100_currencies, links)
             Dictionary().save_dictionary_to_pickle(dfs_dict)
-        if args.c:
-            choose_coin(dfs_dict)
 
     except Exception as E:
         print(E)
-
-
-##############################
 
 
 if __name__ == '__main__':
