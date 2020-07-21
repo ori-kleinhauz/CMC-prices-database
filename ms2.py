@@ -1,6 +1,7 @@
 import numpy as np
 import pymysql.cursors
 from tqdm import tqdm
+import config
 
 # used to prevent AttributeError: 'numpy.float64' object has no attribute 'translate' when inserting values from
 # dataframe to db
@@ -44,36 +45,26 @@ class MySQL_DB:
     def create_db(self, con, name):
         """creates mysql database given its desired name"""
         with con.cursor() as cur:
-            cur.execute(f"create database {name}")
+            cur.execute(f"{config.CREATE_DB} {name}")
 
     def create_tables(self, con):
         """creates the coins and rates tables in the connected database.
          uses unique primary keys for each coin and each rate entry,
          and a foreign one-to-many key from the coins table to the rates table"""
         with con.cursor() as cur:
-            cur.execute("create table coins (id int primary key auto_increment, name char(255))")
-            cur.execute("""create table rates
-                            (id int primary key auto_increment, 
-                            coin_id int, 
-                            date date, 
-                            open float, 
-                            high float, 
-                            low float,
-                            close float, 
-                            volume float, 
-                            cap float,
-                            foreign key (coin_id) references coins(id))""")
+            cur.execute(config.CREATE_COINS)
+            cur.execute(config.CREATE_RATES)
 
     def insert_coins(self, con, dfs):
         """populates the coins table using the dataframes dictionary created in ms1.py.
         if a certain coin replaced another, adds it to the end of the table using auto-increment"""
         with con.cursor() as cur:
-            cur.execute("select name from coins")
+            cur.execute(config.SELECT_NAME)
             result = cur.fetchall()
-            coin_names = [coin['name'] for coin in result]
+            coin_names = [coin[config.NAME] for coin in result]
             for n, df in tqdm(dfs.items()):
                 if n not in coin_names:
-                    cur.execute("insert into coins (name) values (%s)", n)
+                    cur.execute(config.INSERT_COINS, n)
             con.commit()
 
     def insert_rates(self, con, dfs):
@@ -83,24 +74,23 @@ class MySQL_DB:
         new db), or a new coin was added to the coins table, it will add the entire dataframe(s) """
         with con.cursor() as cur:
             for n, df in dfs.items():
-                cur.execute("select id from coins where name=(%s)", n)
+                cur.execute(config.SELECT_ID, n)
                 result = cur.fetchall()
-                coin_id = result[0]['id']
-                cur.execute("select distinct(date) from rates where coin_id = (%s)", coin_id)
+                coin_id = result[config.ZERO][config.ID]
+                cur.execute(config.SELECT_DATES, coin_id)
                 result = cur.fetchall()
-                df = df[~df['Date'].isin([r['date'] for r in result])]
+                df = df[~df[config.DATE].isin([r[config.DATE_LOWER] for r in result])]
                 if not df.empty:
                     for j in tqdm(df.index):
-                        cur.execute("insert into rates (coin_id, date, open, high, low,  close, volume, cap)"
-                                    "values (%s, %s, %s, %s, %s, %s, %s, %s)",
+                        cur.execute(config.INSERT_RATES,
                                     (coin_id,
-                                     df['Date'][j],
-                                     df['Open'][j],
-                                     df['High'][j],
-                                     df['Low'][j],
-                                     df['Close'][j],
-                                     df['Volume'][j],
-                                     df['Cap'][j]
+                                     df[config.DATE][j],
+                                     df[config.OPEN][j],
+                                     df[config.HIGH][j],
+                                     df[config.LOW][j],
+                                     df[config.CLOSE][j],
+                                     df[config.VOLUME][j],
+                                     df[config.CAP][j]
                                      )
                                     )
             con.commit()

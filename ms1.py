@@ -25,27 +25,27 @@ class Scraper:
         """ creates and returns a dictionary of cryptocurrency names and their corresponding url suffixes to be used for
            scraping """
         homepage_get = requests.get(config.HOMEPAGE)
-        sleep(5)
-        homepage_soup = BeautifulSoup(homepage_get.content, 'html.parser')
+        sleep(config.SLEEP_INTERVAL)
+        homepage_soup = BeautifulSoup(homepage_get.content, config.HTML_PARSER)
         top_100_currencies = {}
-        links = [l for l in homepage_soup.findAll("a", href=True, title=True, class_='cmc-link')]
+        links = [l for l in homepage_soup.findAll(config.A, href=True, title=True, class_= config.CMC_LINK)]
         for l in links:
-            if 'currencies' in l['href']:
-                top_100_currencies[l['title']] = l['href'].split('/')[2]
+            if config.CURRENCIES in l[config.HREF]:
+                top_100_currencies[l[config.TITLE]] = l[config.HREF].split(config.SLASH)[config.TWO]
         return top_100_currencies
 
     def parse_100_currencies_links(self, coins):
-        current_date = str(datetime.now().strftime("%Y%m%d"))
-        links = {coin: f'{config.CURRENCIES_PAGE}{coin}{config.CURRENCY_START}{current_date}' for coin in
-                 coins.values()}
+        current_date = str(datetime.now().strftime(config.CURR_DATE_FORMAT))
+        links = {coin: f'{config.CURRENCIES_PAGE}{coin}{config.CURRENCY_START}{current_date}'
+                 for coin in coins.values()}
         return links
 
     def create_soup(self, url):
         """ creates and returns a beutifulsoup object of historical data for a given cryptocurrency"""
         coin_page_get = requests.get(url)
-        coin_soup = BeautifulSoup(coin_page_get.content, 'html.parser')
+        coin_soup = BeautifulSoup(coin_page_get.content, config.HTML_PARSER)
         if not coin_page_get.ok:
-            raise Exception(f"request failed: {url}")
+            raise Exception(f"{config.REQ_FAIL}: {url}")
         return coin_soup
 
 
@@ -53,14 +53,14 @@ class Dataframe:
     def get_dates(self, soup):
         """ creates and returns a list of datetime objects for the history of a given cryptocurrency"""
         dates_raw = [d.text for d in
-                     soup.findAll("td", class_="cmc-table__cell cmc-table__cell--sticky cmc-table__cell--left")]
-        dates = [datetime.strptime(d, '%b %d, %Y').date() for d in dates_raw]
+                     soup.findAll(config.TD, class_=config.CMC_LEFT)]
+        dates = [datetime.strptime(d, config.DF_DATE_FORMAT).date() for d in dates_raw]
         return dates
 
     def get_rates(self, soup):
         """ creates and returns a list of rates(open, close etc.) for the history of a given cryptocurrency"""
-        rates_raw = [d.text for d in soup.findAll("td", class_="cmc-table__cell cmc-table__cell--right")]
-        rates = [r.replace(',', '') for r in rates_raw]
+        rates_raw = [d.text for d in soup.findAll(config.TD, class_=config.CMC_RIGHT)]
+        rates = [r.replace(config.COMMA, config.EMPTY) for r in rates_raw]
         return rates
 
     def create_dataframe(self, value, url):
@@ -68,17 +68,17 @@ class Dataframe:
         soup = Scraper().create_soup(url)
         dates = self.get_dates(soup)
         rates = self.get_rates(soup)
-        col_names = config.COL_NAMES
-        opens = rates[0::6]
-        highs = rates[1::6]
-        lows = rates[2::6]
-        closes = rates[3::6]
-        volumes = rates[4::6]
-        caps = rates[5::6]
+        col_names = [config.DATE, config.OPEN, config.HIGH, config.LOW, config.CLOSE, config.VOLUME, config.CAP]
+        opens = rates[config.ZERO::config.SIX]
+        highs = rates[config.ONE::config.SIX]
+        lows = rates[config.TWO::config.SIX]
+        closes = rates[config.THREE::config.SIX]
+        volumes = rates[config.FOUR::config.SIX]
+        caps = rates[config.FIVE::config.SIX]
         df = pd.DataFrame(zip(dates, opens, highs, lows, closes, volumes, caps), columns=col_names)
-        df[col_names[1:]] = round(df[col_names[1:]].astype(float), 2)
+        df[col_names[config.ONE:]] = round(df[col_names[config.ONE:]].astype(float), config.TWO)
         if df.empty:
-            raise Exception(f"empty df created: {value}")
+            raise Exception(f'{config.EMPTY_DF}: {value}')
         else:
             return df
 
@@ -89,7 +89,7 @@ class Dictionary:
         dfs_dict = {}
         for key, value in tqdm(currencies.items()):
             dfs_dict[key] = Dataframe().create_dataframe(value, links[value])
-            sleep(5)
+            sleep(config.SLEEP_INTERVAL)
         return dfs_dict
 
     def update_dataframes_dictionary(self, dictionary, currencies, links):
@@ -101,11 +101,11 @@ class Dictionary:
 
     def save_dictionary_to_pickle(self, dict):
         """ saves the dataframes dictionary to a pickle file"""
-        pickle.dump(dict, open("dfs_dict.p", "wb"))
+        pickle.dump(dict, open(config.DICTIONARY_FILENAME, config.WB))
 
-    def read_dictionary_from_pickle():
+    def read_dictionary_from_pickle(self):
         """ reads the dataframes dictionary from the pickle file"""
-        with open('dfs_dict.p', 'rb') as pfile:
+        with open(config.DICTIONARY_FILENAME, config.RB) as pfile:
             dfs_dict = pickle.load(pfile)
             return dfs_dict
 
@@ -123,7 +123,7 @@ def main():
     try:
         top_100_currencies = Scraper().get_100_currencies()
         links = Scraper().parse_100_currencies_links(top_100_currencies)
-        dfs_dict = Dictionary.read_dictionary_from_pickle()
+        dfs_dict = Dictionary().read_dictionary_from_pickle()
         db = ms2.MySQL_DB(dfs_dict)
         if args.udb:
             con, empty = db.create_connection(args.udb[1], args.udb[0])
