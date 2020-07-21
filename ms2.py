@@ -89,7 +89,6 @@ class MySQL_DB:
                 cur.execute("select distinct(date) from rates where coin_id = (%s)", coin_id)
                 result = cur.fetchall()
                 df_missing = df[~df['Date'].isin([r['date'] for r in result])]
-                # print(coin_id, df_missing.index, df_missing)
                 if not df_missing.empty:
                     for j in tqdm(df.index):
                         cur.execute("insert into rates (coin_id, date, open, high, low,  close, volume, cap)"
