@@ -50,7 +50,6 @@ class Scraper:
 
 
 class Dataframe:
-
     def get_dates(self, soup):
         """ creates and returns a list of datetime objects for the history of a given cryptocurrency"""
         dates_raw = [d.text for d in
