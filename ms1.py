@@ -130,7 +130,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-cdict', '--cdict', help='Create dictionary file', action='store_true')
     parser.add_argument('-udict', '--udict', help='Update dictionary file', action='store_true')
-    parser.add_argument('-udb', nargs=2, metavar=('password', 'DB'), help='Update mysql DB')
+    parser.add_argument('-udb', nargs=config.TWO, metavar=('password', 'DB'), help='Update mysql DB')
     args = parser.parse_args()
     logger = Logger().create_logger(config.LOGGER_NAME)
 
@@ -140,7 +140,7 @@ def main():
         dfs_dict = Dictionary().read_dictionary_from_pickle()
         db = ms2.MySQL_DB(dfs_dict)
         if args.udb:
-            con, empty = db.create_connection(args.udb[1], args.udb[0])
+            con, empty = db.create_connection(args.udb[config.ZERO], args.udb[config.ONE])
             if not empty:
                 logger.info(config.UPDATE_DB)
                 db.update_db(con, dfs_dict)
