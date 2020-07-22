@@ -37,8 +37,11 @@ FIVE = 5
 SIX = 6
 
 # EXCEPTION
-REQ_FAIL = 'request failed'
-EMPTY_DF = 'empty df created'
+REQ_FAIL = 'Request failed'
+EMPTY_DF = 'Empty df created'
+DATE_ERROR = 'Error reading dates from soup object for'
+RATE_ERROR = 'Error reading rates from soup object for'
+SOUP_ERROR = 'Error reading soup object for '
 
 # DATAFRAME
 COMMA = ','

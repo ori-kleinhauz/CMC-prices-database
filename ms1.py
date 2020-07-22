@@ -75,8 +75,14 @@ def get_rates(soup):
 def create_dataframe(key, url):
     """ creates a dataframe containing the rates of a cryptocurrency for each date in its history of existence"""
     soup = create_soup(url)
+    if soup.is_empty_element:
+        raise Exception(f'{config.SOUP_ERROR} {key}')
     dates = get_dates(soup)
+    if len(dates) == 0:
+        raise Exception(f'{config.DATE_ERROR} {key}')
     rates = get_rates(soup)
+    if len(rates) == 0:
+        raise Exception(f'{config.RATE_ERROR} {key}')
     col_names = [config.DATE, config.OPEN, config.HIGH, config.LOW, config.CLOSE, config.VOLUME, config.CAP]
     opens = rates[config.ZERO::config.SIX]
     highs = rates[config.ONE::config.SIX]
