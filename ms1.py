@@ -132,9 +132,9 @@ def main():
     parser.add_argument('-udict', '--udict', help='Update dictionary file', action='store_true')
     parser.add_argument('-udb', nargs=2, metavar=('password', 'DB'), help='Update mysql DB')
     args = parser.parse_args()
+    logger = Logger().create_logger(config.LOGGER_NAME)
 
     try:
-        logger = Logger().create_logger('dmp.log')
         top_100_currencies = Scraper().get_100_currencies()
         links = Scraper().parse_100_currencies_links(top_100_currencies)
         dfs_dict = Dictionary().read_dictionary_from_pickle()
