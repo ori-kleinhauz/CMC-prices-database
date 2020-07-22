@@ -6,205 +6,164 @@ Ori Kleinhauz
 Yuval Herman
 
 """
-
 import requests
 from bs4 import BeautifulSoup
 import pickle
 import datetime
 from datetime import datetime
 import pandas as pd
-from pathlib import Path
-import os
 from time import sleep
-import shutil
 from tqdm import tqdm
-import sys
 import argparse
 import config
+from ms2 import MySQL_DB
+import logging
 
 
-#############################
+def create_logger(name):
+    """ creates a logger with a given name and adds a file handler to it"""
+    logger = logging.getLogger(name)
+    logger.setLevel(logging.INFO)
+    file_handler = logging.FileHandler(config.LOGGER_NAME)
+    file_handler.setLevel(logging.INFO)
+    formatter = logging.Formatter(config.FORMAT)
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
+    return logger
+
+
 def get_100_currencies():
-    """ creates and returns a dictionary of cryptocurrency names and their corresponding url suffixes to be used for
+    """ creates and returns a dictionary of cryptocurrency names and their corresponding urls to be used for
        scraping """
-    page_get = requests.get(config.HOMEPAGE)
-    soup = BeautifulSoup(page_get.content, 'html.parser')
-    curr = {}
-    links = [l for l in soup.findAll("a", href=True, title=True, class_='cmc-link')]
-    for l in tqdm(links):
-        if 'currencies' in l['href']:
-            curr[l['title']] = l['href'].split('/')[2]
+    current_date = str(datetime.now().strftime(config.CURR_DATE_FORMAT))
+    homepage_get = requests.get(config.HOMEPAGE)
     sleep(config.SLEEP_INTERVAL)
-    return curr
+    homepage_soup = BeautifulSoup(homepage_get.content, config.HTML_PARSER)
+    top_100_currencies = {}
+    links = [l for l in homepage_soup.findAll(config.A, href=True, title=True, class_=config.CMC_LINK)]
+    for l in links:
+        if config.CURRENCIES in l[config.HREF]:
+            coin = l[config.HREF].split(config.SLASH)[config.TWO]
+            top_100_currencies[l[config.TITLE]] = f'{config.CURRENCIES_PAGE}{coin}{config.CURRENCY_START}{current_date}'
+    return top_100_currencies
 
 
-def download_coin_data(coin, end_date):
-    """downloads the content online from CMC and saves to pickle file"""
-    html = f'{config.CURRENCIES_PAGE}{coin}{config.CURRENCY_START}{end_date}'
-    try:
-        page_get = requests.get(html)
-        Path(f'{config.PICKLE_FOLDER}\\').mkdir(parents=True, exist_ok=True)
-        pickle_name = f'{config.PICKLE_FOLDER}\\{str(coin)}'
-        print(pickle_name.lower())
-        outfile = open(pickle_name, 'wb')
-        pickle.dump(page_get, outfile)
-        outfile.close()
-    except ConnectionError:
-        print(f'{config.ERRORS_MESSAGES["Connection_failed"]}')
-
-
-def update_all_coins_data(currencies_to_update):
-    """updates the database of pickle file for the currencies provided"""
-    current_day = str(datetime.now().strftime("%Y%m%d"))
-    for coin, url in tqdm(currencies_to_update.items()):
-        download_coin_data(url, current_day)
-        sleep(config.SLEEP_INTERVAL)
-
-
-def load_coin_from_file(coin):
-    """load content from saved pickle file"""
-    pickle_name = f'{config.PICKLE_FOLDER}\\{str(coin)}'
-    infile = open(pickle_name.lower(), 'rb')
-    page_get = pickle.load(infile)
-    infile.close()
-    return page_get
-
-
-############################
-
-
-############################
-# methods for Creating dataframes for each coin and placing all in one dictionary of {COIN : DATAFRAME}'s
-def create_soup(coin):
+def create_soup(url):
     """ creates and returns a beutifulsoup object of historical data for a given cryptocurrency"""
-    page = load_coin_from_file(coin)
-    soup = BeautifulSoup(page.content, 'html.parser')
-    return soup
+    coin_page_get = requests.get(url)
+    coin_soup = BeautifulSoup(coin_page_get.content, config.HTML_PARSER)
+    if not coin_page_get.ok:
+        raise Exception(f"{config.REQ_FAIL}: {url}")
+    return coin_soup
 
 
 def get_dates(soup):
     """ creates and returns a list of datetime objects for the history of a given cryptocurrency"""
     dates_raw = [d.text for d in
-                 soup.findAll("td", class_="cmc-table__cell cmc-table__cell--sticky cmc-table__cell--left")]
-    dates = [datetime.strptime(d, '%b %d, %Y').date() for d in dates_raw]
+                 soup.findAll(config.TD, class_=config.CMC_LEFT)]
+    dates = [datetime.strptime(d, config.DF_DATE_FORMAT).date() for d in dates_raw]
     return dates
 
 
 def get_rates(soup):
     """ creates and returns a list of rates(open, close etc.) for the history of a given cryptocurrency"""
-    rates_raw = [d.text for d in soup.findAll("td", class_="cmc-table__cell cmc-table__cell--right")]
-    rates = [r.replace(',', '') for r in rates_raw]
+    rates_raw = [d.text for d in soup.findAll(config.TD, class_=config.CMC_RIGHT)]
+    rates = [r.replace(config.COMMA, config.EMPTY) for r in rates_raw]
     return rates
 
 
-def create_dataframe(coin):
+def create_dataframe(key, url):
     """ creates a dataframe containing the rates of a cryptocurrency for each date in its history of existence"""
-    try:
-        soup = create_soup(coin)
-        if soup.is_empty_element:
-            raise RuntimeError(f'{config.ERRORS_MESSAGES["read_soup"]}')
-
-        dates = get_dates(soup)
-        if len(dates) == 0:
-            raise RuntimeError(f'{config.ERRORS_MESSAGES["read_dates"]}')
-
-        rates = get_rates(soup)
-        if len(rates) == 0:
-            raise RuntimeError(f'{config.ERRORS_MESSAGES["read_rates"]}')
-
-        col_names = config.COL_NAMES
-        opens = rates[0::6]
-        highs = rates[1::6]
-        lows = rates[2::6]
-        closes = rates[3::6]
-        volumes = rates[4::6]
-        caps = rates[5::6]
-
-        df = pd.DataFrame(zip(dates, opens, highs, lows, closes, volumes, caps), columns=col_names)
-        df[col_names[1:]] = round(df[col_names[1:]].astype(float), 2)
-
-        if df.empty:
-            return None
-        else:
-            return df
-    except:
-        raise
+    soup = create_soup(url)
+    if soup.is_empty_element:
+        raise Exception(f'{config.SOUP_ERROR} {key}')
+    dates = get_dates(soup)
+    if len(dates) == 0:
+        raise Exception(f'{config.DATE_ERROR} {key}')
+    rates = get_rates(soup)
+    if len(rates) == 0:
+        raise Exception(f'{config.RATE_ERROR} {key}')
+    col_names = [config.DATE, config.OPEN, config.HIGH, config.LOW, config.CLOSE, config.VOLUME, config.CAP]
+    opens = rates[config.ZERO::config.SIX]
+    highs = rates[config.ONE::config.SIX]
+    lows = rates[config.TWO::config.SIX]
+    closes = rates[config.THREE::config.SIX]
+    volumes = rates[config.FOUR::config.SIX]
+    caps = rates[config.FIVE::config.SIX]
+    df = pd.DataFrame(zip(dates, opens, highs, lows, closes, volumes, caps), columns=col_names)
+    df[col_names[config.ONE:]] = round(df[col_names[config.ONE:]].astype(float), config.TWO)
+    if df.empty:
+        raise Exception(f'{config.EMPTY_DF}: {key}')
+    else:
+        return df
 
 
-def create_dictionary(curr):
+def create_dataframes_dictionary(currencies):
     """ creates a dictionary of dataframes for each of the 100 cryptocurrencies scraped"""
-    files_list = os.listdir(config.PICKLE_FOLDER)
-    curs = {k: v for k, v in curr.items() if v.lower() in files_list}
-    dictionary = {}
-    print('Creating Dictionary...')
-    for key, value in tqdm(curs.items()):
-        try:
-            dictionary[key] = create_dataframe(value.lower())
-        except Exception as E:
-            raise E
-    pickle_name = f'\\{config.DICTIONARY_NAME}'
-    outfile = open(pickle_name, 'wb')
-    pickle.dump(dictionary, outfile)
-    outfile.close()
-    try:
-        shutil.rmtree(config.PICKLE_FOLDER, ignore_errors=True)
-    except:
-        raise NotADirectoryError(f'{config.ERRORS_MESSAGES["delete_pickles"]}')
+    dfs_dict = {}
+    for key, value in tqdm(currencies.items()):
+        dfs_dict[key] = create_dataframe(key, value)
+        sleep(config.SLEEP_INTERVAL)
+    return dfs_dict
 
 
-############################
+def update_dataframes_dictionary(dictionary, currencies):
+    """scans the current top 100 currencies list, and, in case any of them is/are not present in the dataframes
+    dictionary, adds it/them """
+    for key, value in tqdm(currencies.items()):
+        if key not in dictionary.keys():
+            dictionary[key] = create_dataframe(key, value)
+            sleep(config.SLEEP_INTERVAL)
 
 
-############################
-def read_dictionary():
-    """load content from saved pickle file"""
-    try:
-        pickle_name = config.DICTIONARY_NAME
-        infile = open(pickle_name, 'rb')
-        dictionary = pickle.load(infile)
-        infile.close()
-        return dictionary
-    except:
-        raise FileNotFoundError(config.ERRORS_MESSAGES['read_dictionary'])
+def save_dictionary_to_pickle(dict):
+    """ saves the dataframes dictionary to a pickle file"""
+    pickle.dump(dict, open(config.DICTIONARY_FILENAME, config.WB))
 
 
-##############################
-def choose_coin():
-    """prompts the user to pick a currency from the dictionary and displays its data"""
-    dictionary = read_dictionary()
-    for counter, key in enumerate(dictionary.keys()):
-        print(counter + 1, ':', key)
-    print('---above is a list of keys for which historical information is available in the dictionary\n')
-    while True:
-        coin_to_display = input('\nPlease choose a coin from the above list to display its history (or press q to '
-                                'exit): ')
-        if coin_to_display == 'q':
-            sys.exit(0)
-        if coin_to_display in dictionary.keys():
-            print(coin_to_display, '\n', dictionary[coin_to_display])
-        else:
-            print(coin_to_display, ' - is not a coin in the available database')
+def read_dictionary_from_pickle():
+    """ reads the dataframes dictionary from the pickle file"""
+    with open(config.DICTIONARY_FILENAME, config.RB) as pfile:
+        dfs_dict = pickle.load(pfile)
+        return dfs_dict
 
 
-##############################
 def main():
-    """ updates the dictionary containing historical data for each cryptocurrency(optional) and prompts the user to
-            choose one of them, then displays its data """
-    try:
-        parser = argparse.ArgumentParser()
-        parser.add_argument('-u', '--u', help='Update database', action='store_true')
-        parser.add_argument('-c', '--c', help='Choose coin', action='store_true')
-        args = parser.parse_args()
-        if args.u:
-            curr = get_100_currencies()
-            update_all_coins_data(curr)
-            create_dictionary(curr)
-        if args.c:
-            choose_coin()
-    except Exception as E:
-        print(E)
+    """ allows for dataframes dictionary creation, update, and printing. in addition, allows for creating and
+    updating the mysql database using the dataframes dictionary """
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-cdict', '--cdict', help='Create dictionary file', action='store_true')
+    parser.add_argument('-udict', '--udict', help='Update dictionary file', action='store_true')
+    parser.add_argument('-udb', nargs=config.TWO, metavar=('password', 'DB'), help='Update mysql DB')
+    args = parser.parse_args()
+    logger = create_logger(config.LOGGER_NAME)
 
-##############################
+    try:
+        top_100_currencies = get_100_currencies()
+        dfs_dict = read_dictionary_from_pickle()
+        db = MySQL_DB(dfs_dict)
+        if args.udb:
+            con, empty = db.create_connection(args.udb[config.ONE], args.udb[config.ZERO])
+            if not empty:
+                logger.info(config.UPDATE_DB)
+                db.update_db(con)
+            else:
+                logger.info(config.CREATING_DB)
+                db.create_tables(con)
+                db.update_db(con)
+        if args.cdict:
+            logger.info(config.CREATE_DICT)
+            dfs_dict = create_dataframes_dictionary(top_100_currencies)
+            logger.info(config.SAVE_DICT)
+            save_dictionary_to_pickle(dfs_dict)
+        if args.udict:
+            logger.info(config.UPDATE_DICT)
+            update_dataframes_dictionary(dfs_dict, top_100_currencies)
+            logger.info(config.SAVE_DICT)
+            save_dictionary_to_pickle(dfs_dict)
+
+    except Exception as E:
+        logger.error(repr(E))
 
 
 if __name__ == '__main__':
