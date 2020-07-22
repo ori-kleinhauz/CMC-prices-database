@@ -3,6 +3,14 @@ HOMEPAGE = 'https://coinmarketcap.com/'
 CURRENCIES_PAGE = 'https://coinmarketcap.com/currencies/'
 CURRENCY_START = '/historical-data/?start=20130429&end='
 
+# LOGGER
+LOGGER_NAME = 'dmp.log'
+FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+CREATE_DICT = 'creating dictionary...'
+UPDATE_DICT = 'updating dictionary...'
+UPDATE_DB = 'updating database...'
+CREATE_DB = 'creating database...'
+
 # SCRAPER
 SLEEP_INTERVAL = 5
 HTML_PARSER = 'html.parser'
@@ -16,8 +24,7 @@ CURR_DATE_FORMAT = '%Y%m%d'
 TD = 'td'
 CMC_RIGHT = 'cmc-table__cell cmc-table__cell--right'
 CMC_LEFT = 'cmc-table__cell cmc-table__cell--sticky cmc-table__cell--left'
-COMMA = ','
-EMPTY = ''
+
 
 # MAGIC NUMBER
 ZERO = 0
@@ -33,6 +40,8 @@ REQ_FAIL = 'request failed'
 EMPTY_DF = 'empty df created'
 
 # DATAFRAME
+COMMA = ','
+EMPTY = ''
 DATE = 'Date'
 OPEN = 'Open'
 HIGH = 'High'

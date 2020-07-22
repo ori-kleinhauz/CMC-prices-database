@@ -18,7 +18,20 @@ from tqdm import tqdm
 import argparse
 import config
 import ms2
+import logging
 
+
+class Logger:
+    def create_logger(self, name):
+        """ creates a logger with a given name and adds a file handler to it"""
+        logger = logging.getLogger(name)
+        logger.setLevel(logging.INFO)
+        file_handler = logging.FileHandler(config.LOGGER_NAME)
+        file_handler.setLevel(logging.INFO)
+        formatter = logging.Formatter(config.FORMAT)
+        file_handler.setFormatter(formatter)
+        logger.addHandler(file_handler)
+        return logger
 
 class Scraper:
     def get_100_currencies(self):
@@ -98,6 +111,7 @@ class Dictionary:
         for key, value in tqdm(currencies.items()):
             if key not in dictionary.keys():
                 dictionary[key] = Dataframe().create_dataframe(value, links[value])
+                sleep(config.SLEEP_INTERVAL)
 
     def save_dictionary_to_pickle(self, dict):
         """ saves the dataframes dictionary to a pickle file"""
@@ -116,37 +130,35 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-cdict', '--cdict', help='Create dictionary file', action='store_true')
     parser.add_argument('-udict', '--udict', help='Update dictionary file', action='store_true')
-    parser.add_argument('-pdict', '--pdict', nargs=1, metavar=('coin'), help='print coin dataframe')
     parser.add_argument('-udb', nargs=2, metavar=('password', 'DB'), help='Update mysql DB')
     args = parser.parse_args()
 
     try:
+        logger = Logger().create_logger('dmp.log')
         top_100_currencies = Scraper().get_100_currencies()
         links = Scraper().parse_100_currencies_links(top_100_currencies)
         dfs_dict = Dictionary().read_dictionary_from_pickle()
         db = ms2.MySQL_DB(dfs_dict)
         if args.udb:
             con, empty = db.create_connection(args.udb[1], args.udb[0])
-            print('updating database')
             if not empty:
+                logger.info(config.UPDATE_DB)
                 db.update_db(con, dfs_dict)
             else:
+                logger.info(config.CREATE_DB)
                 db.create_tables(con)
                 db.update_db(con, dfs_dict)
         if args.cdict:
-            print('creating dictionary')
+            logger.info(config.CREATE_DICT)
             dfs_dict = Dictionary().create_dataframes_dictionary(top_100_currencies, links)
             Dictionary().save_dictionary_to_pickle(dfs_dict)
         if args.udict:
-            print('updating dictionary')
+            logger.info(config.UPDATE_DICT)
             Dictionary().update_dataframes_dictionary(dfs_dict, top_100_currencies, links)
             Dictionary().save_dictionary_to_pickle(dfs_dict)
-        if args.pdict:
-            print(f'displaying {args.pdict[0]} data')
-            print(dfs_dict[args.pdict[0]])
 
     except Exception as E:
-        print(E)
+        logger.error(repr(E))
 
 
 if __name__ == '__main__':
