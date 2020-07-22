@@ -1,6 +1,6 @@
 requests==2.23.0
-numpy==1.18.2
+numpy~=1.18.5
 tqdm==4.46.1
-pandas==0.25.3
+pandas~=0.25.0
 PyMySQL==0.9.3
 beautifulsoup4==4.9.1

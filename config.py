@@ -9,7 +9,8 @@ FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 CREATE_DICT = 'creating dictionary...'
 UPDATE_DICT = 'updating dictionary...'
 UPDATE_DB = 'updating database...'
-CREATE_DB = 'creating database...'
+SAVE_DICT = 'saving dictionary to file...'
+CREATING_DB = 'creating database...'
 
 # SCRAPER
 SLEEP_INTERVAL = 5

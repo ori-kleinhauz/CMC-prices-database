@@ -45,7 +45,7 @@ class MySQL_DB:
     def create_db(self, con, name):
         """creates mysql database given its desired name"""
         with con.cursor() as cur:
-            cur.execute(f"{config.CREATE_DB} {name}")
+            cur.execute(f'{config.CREATE_DB} {name}')
 
     def create_tables(self, con):
         """creates the coins and rates tables in the connected database.
@@ -55,25 +55,25 @@ class MySQL_DB:
             cur.execute(config.CREATE_COINS)
             cur.execute(config.CREATE_RATES)
 
-    def insert_coins(self, con, dfs):
+    def insert_coins(self, con):
         """populates the coins table using the dataframes dictionary created in ms1.py.
         if a certain coin replaced another, adds it to the end of the table using auto-increment"""
         with con.cursor() as cur:
             cur.execute(config.SELECT_NAME)
             result = cur.fetchall()
             coin_names = [coin[config.NAME] for coin in result]
-            for n, df in tqdm(dfs.items()):
+            for n, df in tqdm(self.dfs_dict.items()):
                 if n not in coin_names:
                     cur.execute(config.INSERT_COINS, n)
             con.commit()
 
-    def insert_rates(self, con, dfs):
+    def insert_rates(self, con):
         """ searches for missing dates per coin in the rates table and adds to it those entries from the respective
         dataframe in the dataframes dictionary. gets the coin names from the dataframes dictionary and writes their
         respective id's from the coins table into the rates table. if the rates table is empty (as is the case for a
         new db), or a new coin was added to the coins table, it will add the entire dataframe(s) """
         with con.cursor() as cur:
-            for n, df in dfs.items():
+            for n, df in self.dfs_dict.items():
                 cur.execute(config.SELECT_ID, n)
                 result = cur.fetchall()
                 coin_id = result[config.ZERO][config.ID]
@@ -95,6 +95,6 @@ class MySQL_DB:
                                     )
             con.commit()
 
-    def update_db(self, con, dfs):
-        self.insert_coins(con, dfs)
-        self.insert_rates(con, dfs)
+    def update_db(self, con):
+        self.insert_coins(con)
+        self.insert_rates(con)

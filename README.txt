@@ -33,6 +33,6 @@ By default, the script searches for the file 'dfs_dict.p' in the project's direc
 In case the file is not present, or needs an update in your perspective, use -cdict/-udict respectively.
 To create\update the mysql database, use -udict (it does both).
 
-*** Be aware that every creation of the dictionary takes ~20 minutes to complete due to limited requests per minute the website allows.
+*** Be aware that every creation of the dictionary takes ~15 minutes to complete due to limited requests per minute the website allows.
 
 enjoy!
