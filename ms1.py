@@ -16,7 +16,7 @@ from time import sleep
 from tqdm import tqdm
 import argparse
 import config
-from ms2 import MySQL_DB
+from MySQL_DB import MySQL_DB
 import logging
 
 
