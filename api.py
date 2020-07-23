@@ -17,7 +17,8 @@ def get_api_data():
     except:
         FileNotFoundError('cant located digital_currency_list.csv in project directory')
         exit()
-    api_key = 'YVL6KNC91W8WNDKE'
+    api_key1 = 'YVL6KNC91W8WNDKE'
+    api_key2 = 'WRZRQ8UPM5ZL95QV'
 
     """
     this API allows us in free trial mode - only 5 calls per minute.
@@ -33,8 +34,13 @@ def get_api_data():
     df_api = pd.DataFrame(columns=['coin', 'fcas_rating', 'fcas_score', 'developer_score', 'market_maturity_score'])
 
     ''' making API calls to retrieve data from web   ===> SLEEP_INT * calls = time this would take'''
+
     for x, (key, value) in enumerate(tqdm(symbols.items())):
         querystring = {"symbol": value, "function": "CRYPTO_RATING"}
+        if x % 2 == 0:
+            api_key = api_key1
+        else:
+            api_key = api_key2
         url = f'https://www.alphavantage.co/query?function={querystring["function"]}&symbol=' \
               f'{querystring["symbol"]}&apikey={api_key}'
         headers = {'x-rapidapi-host': "alpha-vantage.p.rapidapi.com",
@@ -42,10 +48,8 @@ def get_api_data():
         try:
             response = requests.request("GET", url, headers=headers)
             json = response.json()['Crypto Rating (FCAS)']
-            fcas_rating = json["3. fcas rating"]
-            fcas_score = json["4. fcas score"]
-            developer_score = json["5. developer score"]
-            market_maturity_score = json["6. market maturity score"]
+            fcas_rating, fcas_score, developer_score, market_maturity_score = \
+                json["3. fcas rating"], json["4. fcas score"], json["5. developer score"], json["6. market maturity score"]
             df_api.loc[x] = [key, fcas_rating, fcas_score, developer_score, market_maturity_score]
             print(df_api.loc[x])
             sleep(SLEEP_INT)

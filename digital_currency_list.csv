@@ -1,541 +1,541 @@
 currency code,currency name
-1ST,FirstBlood
-2GIVE,GiveCoin
+ZRX,0x
 808,808Coin
-ABT,ArcBlock
-ABY,ArtByte
-AC,AsiaCoin
 ACT,Achain
-ADA,Cardano
-ADT,adToken
 ADX,AdEx
-AE,Aeternity
+ADT,adToken
+ELF,aelf
 AEON,Aeon
-AGI,SingularityNET
-AGRS,IDNI-Agoras
-AI,POLY-AI
+ARN,Aeron
+AE,Aeternity
+DLT,Agrello Delta
 AID,AidCoin
 AION,Aion
+AST,AirSwap
 AIR,AirToken
-AKY,Akuya-Coin
+AKY,Akuya Coin
 ALIS,ALIS
+SOC,All Sports
 AMBER,AmberCoin
-AMP,Synereo
 AMPL,Ampleforth
 ANC,Anoncoin
-ANT,Aragon
 APPC,AppCoins
-APX,APX-Ventures
+APX,APX Ventures
+ANT,Aragon
+ABT,ArcBlock
 ARDR,Ardor
 ARK,Ark
-ARN,Aeron
-AST,AirSwap
+ABY,ArtByte
+XAS,Asch
+AC,AsiaCoin
 ATB,ATBCoin
 ATM,ATMChain
+REP,Augur
+AUR,Aurora
 ATS,Authorship
-AUR,Auroracoin
 AVT,Aventus
 B3,B3Coin
-BAT,Basic-Attention-Token
-BAY,BitBay
-BBR,Boolberry
+BNT,Bancor
+BAT,Basic Attention
+BTA,Bata
 BCAP,BCAP
-BCC,BitConnect
-BCD,Bitcoin-Diamond
-BCH,Bitcoin-Cash
-BCN,Bytecoin
-BCPT,BlockMason-Credit-Protocol-Token
-BCX,BitcoinX
-BCY,BitCrystals
-BDL,Bitdeal
-BEE,Bee-Token
+BEE,Bee Token
 BELA,BelaCoin
-BET,DAO-Casino
-BFT,BF-Token
+BFT,BF Token
+BIX,Bibox Token
+BNB,Binance Coin
+BUSD,Binance USD
 BIS,Bismuth
+BAY,BitBay
 BITB,BitBean
 BITBTC,BitBTC
 BITCNY,BitCNY
+BTC,Bitcoin
+BCH,Bitcoin Cash
+BTCD,BitcoinDark
+BCD,Bitcoin Diamond
+BTG,Bitcoin Gold
+XBC,Bitcoin Plus
+BTCP,Bitcoin Private
+BCX,BitcoinX
+BCC,BitConnect
+BTX,Bitcore
+BCY,BitCrystals
+BDL,Bitdeal
+CSNO,BitDice
 BITEUR,BitEUR
 BITGOLD,BitGOLD
-BITSILVER,BitSILVER
-BITUSD,BitUSD
-BIX,Bibox-Token
-BLITZ,Blitzcash
-BLK,Blackcoin
-BLN,Bolenum
-BLOCK,Blocknet
-BLZ,Bluzelle
-BMC,Blackmoon-Crypto
-BNB,Binance-Coin
-BNT,Bancor-Network-Token
-BNTY,Bounty0x
-BOST,BoostCoin
-BOT,Bodhi
-BQ,bitqy
-BRD,Bread
-BRK,Breakout-Coin
-BRX,Breakout-Stake
-BTA,Bata
-BTC,Bitcoin
-BTCD,BitcoinDark
-BTCP,Bitcoin-Private
-BTG,Bitcoin-Gold
 BTM,Bitmark
+BQ,bitqy
 BTS,BitShares
-BTSR,BTSR
-BTX,Bitcore
-BURST,Burstcoin
-BUSD,Binance-USD
-BUZZ,BuzzCoin
-BYC,Bytecent
-BYTOM,Bytom
-C20,Crypto20
-CANN,CannabisCoin
+BITSILVER,BitSILVER
+SWIFT,Bitswift
+BITUSD,BitUSD
+BLK,Blackcoin
+BMC,Blackmoon Crypto
+BLITZ,Blitzcash
 CAT,BlockCAT
-CCRB,CryptoCarbon
+BCPT,BlockMason Credit
+BLOCK,Blocknet
+TIX,Blocktix
+VEE,BLOCKv
 CDT,Blox
-CFI,Cofound-it
+BLZ,Bluzelle
+BOT,Bodhi
+BLN,Bolenum
+BBR,Boolberry
+BOST,BoostCoin
+BNTY,Bounty0x
+BRD,Bread
+BRK,Breakout Coin
+BRX,Breakout Stake
+BTSR,BTSR
+BURST,Burstcoin
+BUZZ,BuzzCoin
+GBYTE,Byteball
+BYC,Bytecent
+BCN,Bytecoin
+BYTOM,Bytom
+CANN,CannabisCoin
+ADA,Cardano
+CTR,Centra
+LINK,ChainLink
 CHAT,ChatCoin
 CHIPS,Chips
+DAY,Chronologic
+CND,Cindicator
+COVAL,Circuits Of
+CVC,Civic
 CLAM,Clams
 CLOAK,CloakCoin
-CMP,Compcoin
-CMT,CyberMiles
-CND,Cindicator
-CNX,Cryptonex
+CFI,Cofound it
 COFI,CoinFi
+CMP,Compcoin
+RAIN,Condensate
+CTXC,Cortex
 COSS,COSS
-COVAL,Circuits-Of-Value
-CRBIT,CreditBIT
+XCP,Counterparty
 CREA,CreativeCoin
+CRBIT,CreditBIT
 CREDO,Credo
 CRW,Crown
-CSNO,BitDice
-CTR,Centra
-CTXC,Cortex
+C20,Crypto20
+CCRB,CryptoCarbon
+CNX,Cryptonex
+XCN,Cryptonite
+PING,CryptoPing
 CURE,CureCoin
-CVC,Civic
+CMT,CyberMiles
 DAI,Dai
+BET,DAO Casino
 DAR,Darcrus
 DASH,Dash
+DTA,Data
+DTB,Databits
 DATA,DATAcoin
-DAY,Chronologic
-DBC,DeepBrain-Chain
-DBIX,DubaiCoin
-DCN,Dentacoin
-DCR,Decred
 DCT,DECENT
-DDF,Digital-Developers-Fund
+MANA,Decentraland
+DCR,Decred
+DBC,DeepBrain Chain
+ONION,DeepOnion
 DENT,Dent
+DCN,Dentacoin
+EVE,Devery
 DFS,DFSCoin
+DMD,Diamond
 DGB,DigiByte
 DGC,Digitalcoin
+DDF,Digital Developers
+XDN,DigitalNote
 DGD,DigixDAO
-DICE,Etheroll
-DLT,Agrello-Delta
-DMD,Diamond
-DMT,DMarket
 DNT,district0x
+DMT,DMarket
+NOTE,DNotes
 DOGE,DogeCoin
 DOPE,DopeCoin
 DRGN,Dragonchain
-DTA,Data
-DTB,Databits
+DBIX,DubaiCoin
 DYN,Dynamic
 EAC,EarthCoin
 EBST,eBoost
 EBTC,eBTC
 ECC,ECC
-ECN,E-coin
+ECN,E coin
 EDG,Edgeless
-EDO,Eidoo
-EFL,Electronic-Gulden
-EGC,EverGreenCoin
 EKT,EDUCare
+EDO,Eidoo
+EMC2,Einsteinium
+XEL,Elastic
 ELA,Elastos
 ELEC,Electrify.Asia
-ELF,aelf
+ETN,Electroneum
+EFL,Electronic Gulden
 ELIX,Elixir
 EMB,Embercoin
+MBRS,Embers
 EMC,Emercoin
-EMC2,Einsteinium
-ENG,Enigma
-ENJ,Enjin-Coin
-ENRG,EnergyCoin
-EOS,EOS
-EOT,EOT-Token
-EQT,EquiTrader
-ERC,EuropeCoin
-ETC,Ethereum-Classic
-ETH,Ethereum
-ETHD,Ethereum-Dark
-ETHOS,Ethos
-ETN,Electroneum
-ETP,Metaverse-Entropy
 ETT,EncryptoTel
-EVE,Devery
+ENRG,EnergyCoin
+ENG,Enigma
+ENJ,Enjin Coin
+EOS,EOS
+EOT,EOT Token
+EQT,EquiTrader
+ETH,Ethereum
+ETC,Ethereum Classic
+ETHD,Ethereum Dark
+DICE,Etheroll
+FUEL,Etherparty
+LEND,EthLend
+ETHOS,Ethos
+ERC,EuropeCoin
 EVX,Everex
+EGC,EverGreenCoin
+XUC,Exchange Union
 EXCL,ExclusiveCoin
 EXP,Expanse
 FCT,Factom
-FLDC,FoldingCoin
+FTC,Feathercoin
+1ST,FirstBlood
+FRST,FirstCoin
 FLO,FlorinCoin
 FLT,FlutterCoin
-FRST,FirstCoin
-FTC,Feathercoin
-FUEL,Etherparty
+FLDC,FoldingCoin
+NTO,Fujinto
 FUN,FunFair
 GAM,Gambit
+GTC,Game
 GAME,GameCredits
 GAS,Gas
-GBG,Golos Gold
-GBX,GoByte
-GBYTE,Byteball
 GCR,GCRCoin
+GVT,Genesis Vision
 GEO,GeoCoin
+GTO,Gifto
+WTT,Giga Watt
+2GIVE,GiveCoin
+GNO,Gnosis Token
+GBX,GoByte
 GLD,GoldCoin
-GNO,Gnosis-Token
-GNT,Golem-Tokens
+GNT,Golem Tokens
 GOLOS,Golos
+GBG,Golos Gold
 GRC,Gridcoin
 GRS,Groestlcoin
-GRWI,Growers-International
-GTC,Game
-GTO,Gifto
+GRWI,Growers International
+NLG,Gulden
 GUP,Guppy
-GVT,Genesis-Vision
 GXS,GXShares
-HBN,HoboNickels
+XHV,Haven Protocol
 HEAT,HEAT
-HMQ,Humaniq
-HPB,High-Performance-Blockchain
-HSR,Hshare
-HUSH,Hush
-HVN,Hive
+THC,HempCoin
 HXX,HexxCoin
-ICN,ICONOMI
+HPB,High Performance
+HVN,Hive
+HBN,HoboNickels
+HSR,Hshare
+HMQ,Humaniq
+HUSH,Hush
 ICX,ICON
-IFC,Infinitecoin
-IFT,investFeed
+ICN,ICONOMI
+AGRS,IDNI Agoras
 IGNIS,Ignis
 INCNT,Incent
-IND,Indorse-Token
+IND,Indorse Token
 INF,InfChain
+IFC,Infinitecoin
 INK,Ink
-INS,INS-Ecosystem
-INSTAR,Insights-Network
-INT,Internet-Node-Token
+INS,INS Ecosystem
+INSTAR,Insights Network
+IXT,InsureX
+INT,Internet Node
+IOP,Internet of
 INXT,Internxt
+IFT,investFeed
 IOC,IOCoin
 ION,ION
-IOP,Internet-of-People
 IOST,IOStoken
 IOTA,IOTA
+ITC,IoT Chain
 IOTX,IoTeX
-IQT,Iquant-Chain
-ITC,IoT-Chain
+IQT,Iquant Chain
 IXC,iXcoin
-IXT,InsureX
 J8T,JET8
-JNT,Jibrel-Network
-KCS,KuCoin
+JNT,Jibrel Network
 KICK,KickCoin
 KIN,KIN
 KMD,Komodo
-KNC,Kyber-Network
 KORE,KoreCoin
-LBC,LBRY-Credits
-LCC,Litecoin-Cash
-LEND,EthLend
+KCS,KuCoin
+KNC,Kyber Network
+TAU,Lamden
+PIX,Lampix
+LBC,LBRY Credits
+LGD,Legends Room
 LEV,Leverj
-LGD,Legends-Room
 LINDA,Linda
-LINK,ChainLink
-LKK,Lykke
-LMC,LoMoCoin
-LOCI,LOCIcoin
-LOOM,Loom-Token
-LRC,Loopring
 LSK,Lisk
 LTC,Litecoin
+LCC,Litecoin Cash
+LOCI,LOCIcoin
+LMC,LoMoCoin
+LOOM,Loom Token
+LRC,Loopring
 LUN,Lunyr
+LKK,Lykke
+XMG,Magi
 MAID,MaidSafeCoin
-MANA,Decentraland
+MKR,Maker
 MAX,Maxcoin
-MBRS,Embers
+MZC,Mazacoin
 MCAP,MCAP
-MCO,Monaco
-MDA,Moeda-Loyalty-Points
-MEC,Megacoin
 MED,MediBlock
+MTN,MedToken
+MEC,Megacoin
+MLN,Melon
 MEME,Memetic
 MER,Mercury
 MGC,MergeCoin
-MGO,MobileGo
+XMT,Metal
+ETP,Metaverse Entropy
+MNE,Minereum
+MRT,Miners Reward
 MINEX,Minex
+MNX,MinexCoin
 MINT,Mintcoin
 MITH,Mithril
-MKR,Maker
-MLN,Melon
-MNE,Minereum
-MNX,MinexCoin
+MGO,MobileGo
 MOD,Modum
+MDA,Moeda Loyalty
+MCO,Monaco
 MONA,MonaCoin
-MRT,Miners-Reward-Token
-MSP,Mothership
-MTH,Monetha
-MTN,MedToken
+XMR,Monero
 MUE,MonetaryUnit
+MTH,Monetha
+MSP,Mothership
 MUSIC,Musicoin
-MYB,MyBit-Token
+MYB,MyBit Token
+XMY,Myriadcoin
 MYST,Mysterium
-MZC,Mazacoin
+NMC,Namecoin
 NAMO,Namocoin
 NANO,Nano
-NAS,Nebulas-Token
-NAV,Nav-Coin
-NBT,NuBits
-NCASH,Nucleus-Vision
-NDC,NeverDie-Coin
+NAV,Nav Coin
 NEBL,Neblio
+NAS,Nebulas Token
+XEM,NEM
 NEO,NEO
 NEOS,NeosCoin
-NET,Nimiq
-NLC2,NoLimitCoin
-NLG,Gulden
-NMC,Namecoin
-NMR,Numeraire
-NOBL,NobleCoin
-NOTE,DNotes
-NPXS,Pundi-X-Token
-NSR,NuShares
-NTO,Fujinto
-NULS,Nuls
-NVC,Novacoin
+NDC,NeverDie Coin
 NXC,Nexium
 NXS,Nexus
+NET,Nimiq
+NOBL,NobleCoin
+NLC2,NoLimitCoin
+NVC,Novacoin
+NBT,NuBits
+NCASH,Nucleus Vision
+NULS,Nuls
+NMR,Numeraire
+NSR,NuShares
 NXT,Nxt
-OAX,openANX
 OBITS,Obits
-OCL,Oceanlab
-OCN,Odyssey
-ODEM,ODEM
 ODN,Obsidian
+OCL,Oceanlab
+ODEM,ODEM
+OCN,Odyssey
 OF,OFCOIN
 OK,OKCash
 OMG,OmiseGo
 OMNI,Omni
-ONION,DeepOnion
 ONT,Ontology
+OAX,openANX
 OPT,Opus
-OST,Simple-Token
+TRAC,OriginTrail
+PRL,Oyster Pearl
+PRG,Paragon Coin
 PART,Particl
 PASC,PascalCoin
-PAY,TenX
-PBL,Pebbles
-PBT,Primalbase-Token
+PTOY,Patientory
 PFR,Payfair
-PING,CryptoPing
+PBL,Pebbles
+PPC,Peercoin
+PPY,Peerplays
+PTC,Pesetacoin
+SOUL,Phantasma
+PLR,Pillar
 PINK,Pinkcoin
 PIVX,PIVX
-PIX,Lampix
-PLBT,Polybius
-PLR,Pillar
 PLU,Pluton
-POA,POA-Network
+POA,POA Network
 POE,Poet
+AI,POLY AI
+PLBT,Polybius
 POLY,Polymath
-POSW,PoSW-Coin
-POT,PotCoin
-POWR,Power-Ledger
-PPC,Peercoin
 PPT,Populous
-PPY,Peerplays
-PRG,Paragon-Coin
-PRL,Oyster-Pearl
-PRO,Propy
+POSW,PoSW Coin
+POT,PotCoin
+POWR,Power Ledger
+PBT,Primalbase Token
 PST,Primas
-PTC,Pesetacoin
-PTOY,Patientory
+XPM,Primecoin
+PRO,Propy
+NPXS,Pundi X
 PURA,Pura
 QASH,QASH
-QAU,Quantum
 QLC,Qlink
-QRK,Quark
-QRL,Quantum-Resistant-Ledger
-QSP,Quantstamp
-QTL,Quatloo
 QTUM,Qtum
+QSP,Quantstamp
+QAU,Quantum
+QRL,Quantum Resistant
+QRK,Quark
+QTL,Quatloo
 QWARK,Qwark
-R,Revain
 RADS,Radium
-RAIN,Condensate
-RBIES,Rubies
-RBX,Ripto-Bux
-RBY,RubyCoin
-RCN,Ripio-Credit-Network
-RDD,ReddCoin
-RDN,Raiden-Network-Token
-REC,Regalcoin
-RED,Redcoin
-REP,Augur
-REQ,Request-Network
+RDN,Raiden Network
 RHOC,RChain
+RRT,Recovery Right
+RED,Redcoin
+RDD,ReddCoin
+RPX,Red Pulse
+REC,Regalcoin
+REQ,Request Network
+R,Revain
+XRL,Rialto
 RIC,Riecoin
+RCN,Ripio Credit
+XRP,XRP
+RBX,Ripto Bux
 RISE,Rise
-RLC,RLC-Token
+RVT,Rivetz
+RLC,RLC Token
 RLT,RouletteToken
-RPX,Red-Pulse
-RRT,Recovery-Right-Tokens
+RBIES,Rubies
+RBY,RubyCoin
 RUFF,Ruff
 RUP,Rupee
-RVT,Rivetz
 SAFEX,SafeExchangeCoin
 SALT,Salt
-SAN,Santiment-Network-Token
-SBD,Steem-Dollars
-SBTC,Super-Bitcoin
-SC,Siacoin
+SLS,SaluS
+SAN,Santiment Network
 SEELE,Seele
 SEQ,Sequence
 SHIFT,SHIFT
+SC,Siacoin
 SIB,SIBCoin
 SIGMA,SIGMAcoin
 SIGT,Signatum
-SJCX,Storjcoin-X
+OST,Simple Token
+SNGLS,SingularDTV
+AGI,SingularityNET
+SRN,Sirin Labs
 SKIN,SkinCoin
 SKY,Skycoin
-SLR,SolarCoin
-SLS,SaluS
 SMART,SmartCash
 SMT,SmartMesh
-SNC,SunContract
-SNGLS,SingularDTV
+SLR,SolarCoin
 SNM,SONM
-SNRG,Synergy
-SNT,Status-Network-Token
-SOC,All-Sports
-SOUL,Phantasma
-SPANK,SpankChain
 SPC,SpaceChain
+SPANK,SpankChain
+XSPEC,Spectrecoin
 SPHR,Sphere
+XID,Sphere Identity
 SPR,SpreadCoin
-SNX,Synthetix-Network-Token
-SRN,Sirin-Labs-Token
 START,Startcoin
+SNT,Status Network
+XST,Stealthcoin
 STEEM,Steem
-STK,STK-Token
-STORJ,Storj
-STORM,Storm
+SBD,Steem Dollars
+XLM,Stellar
+STK,STK Token
 STQ,Storiqa
-STRAT,Stratis
+STORJ,Storj
+SJCX,Storjcoin X
+STORM,Storm
 STX,Stox
+STRAT,Stratis
 SUB,Substratum
+SNC,SunContract
+SBTC,Super Bitcoin
+UNITY,SuperNET
+SWT,Swarm City
 SWFTC,SwftCoin
-SWIFT,Bitswift
-SWT,Swarm-City
 SYNX,Syndicate
+AMP,Synereo
+SNRG,Synergy
+SNX,Synthetix Network
 SYS,SysCoin
 TAAS,Taas
-TAU,Lamden
-TCC,The-ChampCoin
-TFL,True-Flip
-THC,HempCoin
-THETA,Theta-Token
-TIME,Time
-TIX,Blocktix
-TKN,TokenCard
-TKR,Trackr
-TKS,Tokes
-TNB,Time-New-Bank
-TNT,Tierion
-TOA,ToaCoin
-TRAC,OriginTrail
+PAY,TenX
 TRC,Terracoin
+USDT,Tether
+XTZ,Tezos
+TCC,The ChampCoin
+THETA,Theta Token
+TNT,Tierion
+TIME,Time
+TNB,Time New
+TOA,ToaCoin
+TKN,TokenCard
+TKS,Tokes
+TKR,Trackr
 TRCT,Tracto
-TRIG,Triggers
-TRST,Trustcoin
-TRUE,TrueChain
-TRUST,TrustPlus
-TRX,Tronix
-TUSD,TrueUSD
 TX,TransferCoin
+TRIG,Triggers
+TRX,Tronix
+TRUE,TrueChain
+TFL,TRUE Flip
+TUSD,TrueUSD
+TRST,Trustcoin
+TRUST,TrustPlus
 UBQ,Ubiq
-UKG,UnikoinGold
 ULA,Ulatech
 UNB,UnbreakableCoin
-UNITY,SuperNET
+UKG,UnikoinGold
+UNY,Unity Ingot
 UNO,Unobtanium
-UNY,Unity-Ingot
 UP,UpToken
 URO,Uro
-USDT,Tether
 UTK,UTrust
-VEE,BLOCKv
+XVC,Vcash
 VEN,VeChain
+XVG,Verge
+VRC,Vericoin
 VERI,Veritaseum
+VRM,Verium
+VRS,Veros
+VTC,Vertcoin
 VIA,Viacoin
-VIB,Viberate
 VIBE,Vibe
+VIB,Viberate
 VIVO,VIVO
 VOISE,Voise
 VOX,Voxels
 VPN,VPNCoin
-VRC,Vericoin
-VRM,Verium
-VRS,Veros
 VSL,vSlice
-VTC,Vertcoin
 VTR,vTorrent
 WABI,WaBi
+WGR,Wagerr
+WTC,Walton
 WAN,Wanchain
 WAVES,Waves
-WAX,Wax-Token
-WCT,Waves-Community
-WDC,WorldCoin
+WCT,Waves Community
 WGO,WavesGo
-WGR,Wagerr
-WINGS,Wings
+WAX,Wax Token
 WPR,WePower
-WTC,Walton
-WTT,Giga-Watt-Token
-XAS,Asch
-XAUR,Xaurum
-XBC,Bitcoin-Plus
-XBY,XtraBYtes
-XCN,Cryptonite
-XCP,Counterparty
-XDN,DigitalNote
-XEL,Elastic
-XEM,NEM
-XHV,Haven-Protocol
-XID,Sphere-Identity
-XLM,Stellar
-XMG,Magi
-XMR,Monero
-XMT,Metal
-XMY,Myriadcoin
-XPM,Primecoin
-XRL,Rialto
-XRP,Ripple
-XSPEC,Spectrecoin
-XST,Stealthcoin
-XTZ,Tezos
-XUC,Exchange-Union
-XVC,Vcash
-XVG,Verge
 XWC,WhiteCoin
-XZC,ZCoin
-XZR,ZrCoin
+WINGS,Wings
+WDC,WorldCoin
+XAUR,Xaurum
+XBY,XtraBYtes
 YEE,Yee
 YOYOW,YOYOW
+ZEC,Zcash
 ZCC,ZcCoin
 ZCL,Zclassic
+XZC,ZCoin
 ZCO,Zebi
-ZEC,Zcash
 ZEN,ZenCash
 ZET,Zetacoin
-ZIL,Zilliqa
 ZLA,Zilla
-ZRX,0x
+ZIL,Zilliqa
+XZR,ZrCoin
