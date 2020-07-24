@@ -144,9 +144,11 @@ def update_and_save_dict(logger, dfs_dict, top_100_currencies):
     logger.info(config.SAVE_DICT)
     save_dictionary_to_pickle(dfs_dict)
 
+
 def save_api_to_pickle(api_data):
     """ saves the api dataframe to a pickle file"""
     pickle.dump(api_data, open(config.API_FILENAME, config.WB))
+
 
 def read_api_from_pickle():
     """ saves the api dataframe to a pickle file"""
@@ -154,17 +156,19 @@ def read_api_from_pickle():
         api_data = pickle.load(pfile)
         return api_data
 
+
 def create_and_save_api(logger):
     logger.info(config.FETCH_API)
     api_data = api.get_api_data()
     logger.info(config.SAVE_API)
     save_api_to_pickle(api_data)
 
+
 def main():
     """ allows for dataframes dictionary creation, update, and printing. in addition, allows for creating and
     updating the mysql database using the dataframes dictionary """
     parser = argparse.ArgumentParser()
-    parser.add_argument(config.CDICT,f'{config.SPACE}{config.CDICT}', help=config.CDICT_HELP, action=config.ST)
+    parser.add_argument(config.CDICT, f'{config.SPACE}{config.CDICT}', help=config.CDICT_HELP, action=config.ST)
     parser.add_argument(config.UDICT, f'{config.SPACE}{config.UDICT}', help=config.UDICT_HELP, action=config.ST)
     parser.add_argument(config.UAPI, f'{config.SPACE}{config.UAPI}', help=config.UAPI_HELP, action=config.ST)
     parser.add_argument(config.UDB, nargs=config.TWO, metavar=(config.PASSWORD, config.DB), help=config.UDB_HELP)

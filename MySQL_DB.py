@@ -128,4 +128,4 @@ class MySQL_DB:
         self.logger.info(config.UPDATE_DB)
         self.insert_coins(con)
         self.insert_rates(con)
-        # self.insert_from_api(con)
+

@@ -50,7 +50,6 @@ def get_api_data():
                 json["3. fcas rating"], json["4. fcas score"], json["5. developer score"], json[
                     "6. market maturity score"]
             df_api.loc[x] = [key, fcas_rating, fcas_score, developer_score, market_maturity_score]
-            # print(df_api.loc[x])
             sleep(config.API_INTERVAL)
         except Exception as E:
             print(E)
