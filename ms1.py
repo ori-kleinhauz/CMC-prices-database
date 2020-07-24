@@ -18,6 +18,7 @@ import argparse
 import config
 from MySQL_DB import MySQL_DB
 import logging
+import api
 
 
 def create_logger(name):
@@ -143,12 +144,29 @@ def update_and_save_dict(logger, dfs_dict, top_100_currencies):
     logger.info(config.SAVE_DICT)
     save_dictionary_to_pickle(dfs_dict)
 
+def save_api_to_pickle(api_data):
+    """ saves the api dataframe to a pickle file"""
+    pickle.dump(api_data, open(config.API_FILENAME, config.WB))
+
+def read_api_from_pickle():
+    """ saves the api dataframe to a pickle file"""
+    with open(config.API_FILENAME, config.RB) as pfile:
+        api_data = pickle.load(pfile)
+        return api_data
+
+def create_and_save_api(logger):
+    logger.info(config.FETCH_API)
+    api_data = api.get_api_data()
+    logger.info(config.SAVE_API)
+    save_api_to_pickle(api_data)
+
 def main():
     """ allows for dataframes dictionary creation, update, and printing. in addition, allows for creating and
     updating the mysql database using the dataframes dictionary """
     parser = argparse.ArgumentParser()
     parser.add_argument('-cdict', '--cdict', help='Create dictionary file', action='store_true')
     parser.add_argument('-udict', '--udict', help='Update dictionary file', action='store_true')
+    parser.add_argument('-uapi', '--uapi', help='Update api file', action='store_true')
     parser.add_argument('-udb', nargs=config.TWO, metavar=('password', 'DB'), help='Update mysql DB')
     args = parser.parse_args()
     logger = create_logger(config.LOGGER_NAME)
@@ -162,9 +180,17 @@ def main():
         dfs_dict = read_dictionary_from_pickle()
 
     try:
-        db = MySQL_DB(dfs_dict, logger)
+        api_data = read_api_from_pickle()
+    except FileNotFoundError:
+        logger.error(config.NO_API)
+        create_and_save_api(logger)
+        api_data = read_api_from_pickle()
+
+    try:
+        db = MySQL_DB(dfs_dict, api_data, logger)
+        con, empty = db.create_connection(args.udb[config.ONE], args.udb[config.ZERO])
+
         if args.udb:
-            con, empty = db.create_connection(args.udb[config.ONE], args.udb[config.ZERO])
             if not empty:
                 db.update_db(con)
             else:
@@ -174,9 +200,11 @@ def main():
             create_and_save_dict(logger, top_100_currencies)
         if args.udict:
             update_and_save_dict(logger, dfs_dict, top_100_currencies)
+        if args.uapi:
+            create_and_save_api(logger)
 
     except Exception as E:
-        logger.error(repr(E))
+        logger.error(E)
 
 
 if __name__ == '__main__':

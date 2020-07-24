@@ -17,6 +17,9 @@ CREATE_TABLES = 'Creating tables..'
 COMPLETE = 'Complete'
 UP_COINS = 'Updating coins...'
 UP_RATES = 'Updating rates...'
+UP_COINS_API = 'Updating coins from API...'
+FETCH_API = 'fetching data from api..'
+SAVE_API = 'saving api data to file...'
 
 # SCRAPER
 SLEEP_INTERVAL = 5
@@ -49,7 +52,7 @@ DATE_ERROR = 'Error reading dates from soup object for'
 RATE_ERROR = 'Error reading rates from soup object for'
 SOUP_ERROR = 'Error reading soup object for '
 NO_DICT = 'Dictionary file not present in directory'
-
+NO_API = 'api data file not present in directory'
 # DATAFRAME
 COMMA = ','
 EMPTY = ''
@@ -62,20 +65,30 @@ VOLUME = 'Volume'
 CAP = 'Cap'
 DF_DATE_FORMAT = '%b %d, %Y'
 API_INTERVAL = 15
-
+COIN = 'coin'
+FR = 'fcas_rating'
+FS = 'fcas_score'
+DS = 'developer_score'
+MMS = 'market_maturity_score'
 # FILE
 WB = 'wb'
 RB = 'rb'
 DICTIONARY_FILENAME = 'dfs_dict.p'
-
+API_FILENAME = 'api_data.p'
 # MYSQL STRING
 NAME = 'name'
 ID = 'id'
 DATE_LOWER = 'date'
 
+
 # MYSQL QUERY
 CREATE_DB = 'create database'
-CREATE_COINS = 'create table coins (id int primary key auto_increment, name char(255))'
+CREATE_COINS = """create table coins (id int primary key auto_increment, 
+                                      name char(255), 
+                                      fcas_rating char(255), 
+                                      fcas_score int, 
+                                      dev_score int, 
+                                      mm_score int)"""
 CREATE_RATES = """create table rates
                             (id int primary key auto_increment, 
                             coin_id int, 
@@ -93,5 +106,10 @@ INSERT_RATES = """insert into rates (coin_id, date, open, high, low,  close, vol
                                      values (%s, %s, %s, %s, %s, %s, %s, %s)"""
 SELECT_ID = 'select id from coins where name=(%s)'
 SELECT_DATES = 'select distinct(date) from rates where coin_id = (%s)'
-
-# API
+INSERT_API = """update coins
+                set 
+                fcas_rating = %s, 
+                fcas_score = %s, 
+                dev_score = %s, 
+                mm_score = %s  
+                where name = %s """

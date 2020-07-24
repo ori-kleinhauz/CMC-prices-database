@@ -12,7 +12,6 @@ def get_api_data():
     added is a csv file of 500+ coin names and symbol that the API requires
     in its http call to be added.
     it is added to the project because the script matches between scrapped database names to API names"""
-    df = pd.DataFrame
     try:
         df = pd.read_csv('digital_currency_list.csv')
     except FileNotFoundError:
@@ -51,13 +50,10 @@ def get_api_data():
                 json["3. fcas rating"], json["4. fcas score"], json["5. developer score"], json[
                     "6. market maturity score"]
             df_api.loc[x] = [key, fcas_rating, fcas_score, developer_score, market_maturity_score]
-            print(df_api.loc[x])
+            # print(df_api.loc[x])
             sleep(config.API_INTERVAL)
         except Exception as E:
             print(E)
     return df_api
 
 
-if __name__ == '__main__':
-    df = get_api_data()
-    print(df)

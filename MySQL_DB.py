@@ -11,8 +11,9 @@ pymysql.converters.conversions.update(pymysql.converters.decoders)
 
 
 class MySQL_DB:
-    def __init__(self, dfs_dict, logger):
+    def __init__(self, dfs_dict, api_data, logger):
         self.dfs_dict = dfs_dict
+        self.api_data = api_data
         self.logger = logger
 
     def create_connection(self, db, pswd):
@@ -61,17 +62,35 @@ class MySQL_DB:
             cur.execute(config.CREATE_RATES)
         self.logger.info(config.COMPLETE)
 
+    def get_coin_names(self, cur):
+        """ gets the names of all coins in the coins table and puts them in a list"""
+        cur.execute(config.SELECT_NAME)
+        result = cur.fetchall()
+        coin_names = [coin[config.NAME] for coin in result]
+        return coin_names
+
     def insert_coins(self, con):
         """populates the coins table using the dataframes dictionary created in ms1.py.
         if a certain coin replaced another, adds it to the end of the table using auto-increment"""
-        self.logger.info(config.UP_COINS)
         with con.cursor() as cur:
-            cur.execute(config.SELECT_NAME)
-            result = cur.fetchall()
-            coin_names = [coin[config.NAME] for coin in result]
+            coin_names = self.get_coin_names(cur)
+            self.logger.info(config.UP_COINS)
             for n, df in tqdm(self.dfs_dict.items()):
                 if n not in coin_names:
                     cur.execute(config.INSERT_COINS, n)
+            con.commit()
+            coin_names = self.get_coin_names(cur)
+            self.logger.info(config.UP_COINS_API)
+            for n in tqdm(list(self.api_data[config.COIN])):
+                if n in coin_names:
+                    cur.execute(config.INSERT_API,
+                                (self.api_data[self.api_data[config.COIN] == n][config.FR].values[config.ZERO],
+                                 int(self.api_data[self.api_data[config.COIN] == n][config.FS].values[config.ZERO]),
+                                 int(self.api_data[self.api_data[config.COIN] == n][config.DS].values[config.ZERO]),
+                                 int(self.api_data[self.api_data[config.COIN] == n][config.MMS].values[config.ZERO]),
+                                 self.api_data[self.api_data[config.COIN] == n][config.COIN].values[config.ZERO]
+                                 )
+                                )
             con.commit()
         self.logger.info(config.COMPLETE)
 
@@ -105,8 +124,8 @@ class MySQL_DB:
             con.commit()
         self.logger.info(config.COMPLETE)
 
-
     def update_db(self, con):
         self.logger.info(config.UPDATE_DB)
         self.insert_coins(con)
         self.insert_rates(con)
+        # self.insert_from_api(con)
