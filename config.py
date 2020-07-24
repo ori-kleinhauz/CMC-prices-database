@@ -54,6 +54,7 @@ CLOSE = 'Close'
 VOLUME = 'Volume'
 CAP = 'Cap'
 DF_DATE_FORMAT = '%b %d, %Y'
+API_INTERVAL = 15
 
 # FILE
 WB = 'wb'
