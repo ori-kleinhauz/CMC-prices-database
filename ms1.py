@@ -164,23 +164,27 @@ def main():
     """ allows for dataframes dictionary creation, update, and printing. in addition, allows for creating and
     updating the mysql database using the dataframes dictionary """
     parser = argparse.ArgumentParser()
-    parser.add_argument('-cdict', '--cdict', help='Create dictionary file', action='store_true')
-    parser.add_argument('-udict', '--udict', help='Update dictionary file', action='store_true')
-    parser.add_argument('-uapi', '--uapi', help='Update api file', action='store_true')
-    parser.add_argument('-udb', nargs=config.TWO, metavar=('password', 'DB'), help='Update mysql DB')
+    parser.add_argument(config.CDICT,f'{config.SPACE}{config.CDICT}', help=config.CDICT_HELP, action=config.ST)
+    parser.add_argument(config.UDICT, f'{config.SPACE}{config.UDICT}', help=config.UDICT_HELP, action=config.ST)
+    parser.add_argument(config.UAPI, f'{config.SPACE}{config.UAPI}', help=config.UAPI_HELP, action=config.ST)
+    parser.add_argument(config.UDB, nargs=config.TWO, metavar=(config.PASSWORD, config.DB), help=config.UDB_HELP)
     args = parser.parse_args()
     logger = create_logger(config.LOGGER_NAME)
     top_100_currencies = get_100_currencies()
 
     try:
+        logger.info(config.READ_DICT)
         dfs_dict = read_dictionary_from_pickle()
+        logger.info(config.SUCCESS)
     except FileNotFoundError:
         logger.error(config.NO_DICT)
         create_and_save_dict(logger, top_100_currencies)
         dfs_dict = read_dictionary_from_pickle()
 
     try:
+        logger.info(config.READ_API)
         api_data = read_api_from_pickle()
+        logger.info(config.SUCCESS)
     except FileNotFoundError:
         logger.error(config.NO_API)
         create_and_save_api(logger)

@@ -20,7 +20,10 @@ UP_RATES = 'Updating rates...'
 UP_COINS_API = 'Updating coins from API...'
 FETCH_API = 'fetching data from api..'
 SAVE_API = 'saving api data to file...'
-
+READ_DICT = 'Attempting to read dictionary...'
+READ_API = 'Attempting to read api data...'
+SUCCESS = 'Success' \
+          ''
 # SCRAPER
 SLEEP_INTERVAL = 5
 HTML_PARSER = 'html.parser'
@@ -53,6 +56,7 @@ RATE_ERROR = 'Error reading rates from soup object for'
 SOUP_ERROR = 'Error reading soup object for '
 NO_DICT = 'Dictionary file not present in directory'
 NO_API = 'api data file not present in directory'
+
 # DATAFRAME
 COMMA = ','
 EMPTY = ''
@@ -70,11 +74,27 @@ FR = 'fcas_rating'
 FS = 'fcas_score'
 DS = 'developer_score'
 MMS = 'market_maturity_score'
+
 # FILE
 WB = 'wb'
 RB = 'rb'
 DICTIONARY_FILENAME = 'dfs_dict.p'
 API_FILENAME = 'api_data.p'
+
+# Parser
+ST = 'store_true'
+UDB_HELP = 'Update mysql db'
+CDICT_HELP = 'Create dictionary file'
+UDICT_HELP = 'Update dictionary file'
+UAPI_HELP = 'Update api file'
+PASSWORD = 'password'
+DB = 'db'
+CDICT = '-cdict'
+UDICT = '-udict'
+UDB = '-udb'
+UAPI = '-uapi'
+SPACE = '-'
+
 # MYSQL STRING
 NAME = 'name'
 ID = 'id'
