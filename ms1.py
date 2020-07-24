@@ -128,6 +128,21 @@ def read_dictionary_from_pickle():
         return dfs_dict
 
 
+def create_and_save_dict(logger, top_100_currencies):
+    """ creates, logs, and saves dataframes dictionary to file"""
+    logger.info(config.CREATE_DICT)
+    dfs_dict = create_dataframes_dictionary(top_100_currencies)
+    logger.info(config.SAVE_DICT)
+    save_dictionary_to_pickle(dfs_dict)
+
+
+def update_and_save_dict(logger, dfs_dict, top_100_currencies):
+    """ updates, logs, and saves dataframes dictionary to file"""
+    logger.info(config.UPDATE_DICT)
+    update_dataframes_dictionary(dfs_dict, top_100_currencies)
+    logger.info(config.SAVE_DICT)
+    save_dictionary_to_pickle(dfs_dict)
+
 def main():
     """ allows for dataframes dictionary creation, update, and printing. in addition, allows for creating and
     updating the mysql database using the dataframes dictionary """
@@ -137,30 +152,28 @@ def main():
     parser.add_argument('-udb', nargs=config.TWO, metavar=('password', 'DB'), help='Update mysql DB')
     args = parser.parse_args()
     logger = create_logger(config.LOGGER_NAME)
+    top_100_currencies = get_100_currencies()
 
     try:
-        top_100_currencies = get_100_currencies()
         dfs_dict = read_dictionary_from_pickle()
-        db = MySQL_DB(dfs_dict)
+    except FileNotFoundError:
+        logger.error(config.NO_DICT)
+        create_and_save_dict(logger, top_100_currencies)
+        dfs_dict = read_dictionary_from_pickle()
+
+    try:
+        db = MySQL_DB(dfs_dict, logger)
         if args.udb:
             con, empty = db.create_connection(args.udb[config.ONE], args.udb[config.ZERO])
             if not empty:
-                logger.info(config.UPDATE_DB)
                 db.update_db(con)
             else:
-                logger.info(config.CREATING_DB)
                 db.create_tables(con)
                 db.update_db(con)
         if args.cdict:
-            logger.info(config.CREATE_DICT)
-            dfs_dict = create_dataframes_dictionary(top_100_currencies)
-            logger.info(config.SAVE_DICT)
-            save_dictionary_to_pickle(dfs_dict)
+            create_and_save_dict(logger, top_100_currencies)
         if args.udict:
-            logger.info(config.UPDATE_DICT)
-            update_dataframes_dictionary(dfs_dict, top_100_currencies)
-            logger.info(config.SAVE_DICT)
-            save_dictionary_to_pickle(dfs_dict)
+            update_and_save_dict(logger, dfs_dict, top_100_currencies)
 
     except Exception as E:
         logger.error(repr(E))

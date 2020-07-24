@@ -6,11 +6,17 @@ CURRENCY_START = '/historical-data/?start=20130429&end='
 # LOGGER
 LOGGER_NAME = 'dmp.log'
 FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-CREATE_DICT = 'creating dictionary...'
-UPDATE_DICT = 'updating dictionary...'
-UPDATE_DB = 'updating database...'
-SAVE_DICT = 'saving dictionary to file...'
-CREATING_DB = 'creating database...'
+CREATE_DICT = 'Creating dictionary...'
+UPDATE_DICT = 'Updating dictionary...'
+UPDATE_DB = 'Updating database...'
+SAVE_DICT = 'Saving dictionary to file...'
+CREATING_DB = 'Creating database...'
+CON_DB = 'Attempting to connect to database'
+CON_SUC = 'Connection successful'
+CREATE_TABLES = 'Creating tables..'
+COMPLETE = 'Complete'
+UP_COINS = 'Updating coins...'
+UP_RATES = 'Updating rates...'
 
 # SCRAPER
 SLEEP_INTERVAL = 5
@@ -42,6 +48,7 @@ EMPTY_DF = 'Empty df created'
 DATE_ERROR = 'Error reading dates from soup object for'
 RATE_ERROR = 'Error reading rates from soup object for'
 SOUP_ERROR = 'Error reading soup object for '
+NO_DICT = 'Dictionary file not present in directory'
 
 # DATAFRAME
 COMMA = ','
@@ -86,3 +93,5 @@ INSERT_RATES = """insert into rates (coin_id, date, open, high, low,  close, vol
                                      values (%s, %s, %s, %s, %s, %s, %s, %s)"""
 SELECT_ID = 'select id from coins where name=(%s)'
 SELECT_DATES = 'select distinct(date) from rates where coin_id = (%s)'
+
+# API
