@@ -191,10 +191,9 @@ def main():
         api_data = read_api_from_pickle()
 
     try:
-        db = MySQL_DB(dfs_dict, api_data, logger)
-        con, empty = db.create_connection(args.udb[config.ONE], args.udb[config.ZERO])
-
         if args.udb:
+            db = MySQL_DB(dfs_dict, api_data, logger)
+            con, empty = db.create_connection(args.udb[config.ONE], args.udb[config.ZERO])
             if not empty:
                 db.update_db(con)
             else:
@@ -208,7 +207,7 @@ def main():
             create_and_save_api(logger)
 
     except Exception as E:
-        logger.error(E)
+        logger.error(E, exc_info=True)
 
 
 if __name__ == '__main__':
