@@ -32,8 +32,8 @@ Run "python ms1.py" with either of the following arguments:
 
 By default, the script searches for the files 'dfs_dict.p' and 'api_data.p' in the project's directory and them to
 variables. Due to the limitations imposed by the sleep intervals, the time it takes to create the files is the same as
-the time it would take to update them. Thus, if you wish to update the api dataframe or the scraped data dictionary to the
-latest date, you must recreate them using -capi or -cdict.
+the time it would take to update them. Thus, if you wish to update the api dataframe or the scraped data dictionary to
+the latest date, you must recreate them using -capi or -cdict.
 
 In case the top 100 currencies list in the website changed, you can use -udict to add new coins to the dictionary
 without overwriting existing ones. However, if you then wish to bring the entire dictionary uo to date,  you must

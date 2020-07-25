@@ -133,16 +133,20 @@ def create_and_save_dict(logger, top_100_currencies):
     """ creates, logs, and saves dataframes dictionary to file"""
     logger.info(config.CREATE_DICT)
     dfs_dict = create_dataframes_dictionary(top_100_currencies)
+    logger.info(config.SUCCESS)
     logger.info(config.SAVE_DICT)
     save_dictionary_to_pickle(dfs_dict)
+    logger.info(config.SUCCESS)
 
 
 def update_and_save_dict(logger, dfs_dict, top_100_currencies):
     """ updates, logs, and saves dataframes dictionary to file"""
     logger.info(config.UPDATE_DICT)
     update_dataframes_dictionary(dfs_dict, top_100_currencies)
+    logger.info(config.SUCCESS)
     logger.info(config.SAVE_DICT)
     save_dictionary_to_pickle(dfs_dict)
+    logger.info(config.SUCCESS)
 
 
 def save_api_to_pickle(api_data):
@@ -160,8 +164,10 @@ def read_api_from_pickle():
 def create_and_save_api(logger):
     logger.info(config.FETCH_API)
     api_data = api.get_api_data()
+    logger.info(config.SUCCESS)
     logger.info(config.SAVE_API)
     save_api_to_pickle(api_data)
+    logger.info(config.SUCCESS)
 
 
 def main():
@@ -177,27 +183,27 @@ def main():
     top_100_currencies = get_100_currencies()
 
     try:
-        logger.info(config.READ_DICT)
-        dfs_dict = read_dictionary_from_pickle()
-        logger.info(config.SUCCESS)
-    except FileNotFoundError:
-        logger.error(config.NO_DICT)
-        create_and_save_dict(logger, top_100_currencies)
-        logger.info(config.READ_DICT)
-        dfs_dict = read_dictionary_from_pickle()
-        logger.info(config.SUCCESS)
-    try:
-        logger.info(config.READ_API)
-        api_data = read_api_from_pickle()
-        logger.info(config.SUCCESS)
-    except FileNotFoundError:
-        logger.error(config.NO_API)
-        create_and_save_api(logger)
-        logger.info(config.READ_API)
-        api_data = read_api_from_pickle()
-        logger.info(config.SUCCESS)
+        try:
+            logger.info(config.READ_DICT)
+            dfs_dict = read_dictionary_from_pickle()
+            logger.info(config.SUCCESS)
+        except FileNotFoundError:
+            logger.error(config.NO_DICT)
+            create_and_save_dict(logger, top_100_currencies)
+            logger.info(config.READ_DICT)
+            dfs_dict = read_dictionary_from_pickle()
+            logger.info(config.SUCCESS)
+        try:
+            logger.info(config.READ_API)
+            api_data = read_api_from_pickle()
+            logger.info(config.SUCCESS)
+        except FileNotFoundError:
+            logger.error(config.NO_API)
+            create_and_save_api(logger)
+            logger.info(config.READ_API)
+            api_data = read_api_from_pickle()
+            logger.info(config.SUCCESS)
 
-    try:
         if args.udb:
             db = MySQL_DB(dfs_dict, api_data, logger)
             con, empty = db.create_connection(args.udb[config.ONE], args.udb[config.ZERO])
@@ -212,7 +218,6 @@ def main():
             create_and_save_api(logger)
         if args.udict:
             update_and_save_dict(logger, dfs_dict, top_100_currencies)
-
 
     except Exception as E:
         logger.error(E, exc_info=True)
