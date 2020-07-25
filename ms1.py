@@ -169,8 +169,8 @@ def main():
     updating the mysql database using the dataframes dictionary """
     parser = argparse.ArgumentParser()
     parser.add_argument(config.CDICT, f'{config.SPACE}{config.CDICT}', help=config.CDICT_HELP, action=config.ST)
+    parser.add_argument(config.CAPI, f'{config.SPACE}{config.CAPI}', help=config.UAPI_HELP, action=config.ST)
     parser.add_argument(config.UDICT, f'{config.SPACE}{config.UDICT}', help=config.UDICT_HELP, action=config.ST)
-    parser.add_argument(config.UAPI, f'{config.SPACE}{config.UAPI}', help=config.UAPI_HELP, action=config.ST)
     parser.add_argument(config.UDB, nargs=config.TWO, metavar=(config.PASSWORD, config.DB), help=config.UDB_HELP)
     args = parser.parse_args()
     logger = create_logger(config.LOGGER_NAME)
@@ -183,8 +183,9 @@ def main():
     except FileNotFoundError:
         logger.error(config.NO_DICT)
         create_and_save_dict(logger, top_100_currencies)
+        logger.info(config.READ_DICT)
         dfs_dict = read_dictionary_from_pickle()
-
+        logger.info(config.SUCCESS)
     try:
         logger.info(config.READ_API)
         api_data = read_api_from_pickle()
@@ -192,7 +193,9 @@ def main():
     except FileNotFoundError:
         logger.error(config.NO_API)
         create_and_save_api(logger)
+        logger.info(config.READ_API)
         api_data = read_api_from_pickle()
+        logger.info(config.SUCCESS)
 
     try:
         if args.udb:
@@ -205,10 +208,11 @@ def main():
                 db.update_db(con)
         if args.cdict:
             create_and_save_dict(logger, top_100_currencies)
+        if args.capi:
+            create_and_save_api(logger)
         if args.udict:
             update_and_save_dict(logger, dfs_dict, top_100_currencies)
-        if args.uapi:
-            create_and_save_api(logger)
+
 
     except Exception as E:
         logger.error(E, exc_info=True)
