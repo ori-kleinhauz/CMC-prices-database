@@ -16,7 +16,7 @@ DMP-MS2_ERD.pdf - relationship diagram of mysql database.
 
 Description:
 This project offers access to complete historical data of worldwide daily average rates for the top 100 traded
-crypto currencies sorted by market capitalization according to http://www.coinmarketcap.com (hereinafter: the website).
+crypto currencies sorted by market capitalization according to http://www.coinmarketcap.com 
 
 It utilizes both original scraping techniques and a public API to collect data.
 
