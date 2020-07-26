@@ -30,12 +30,13 @@ Run "python ms1.py" with either of the following arguments:
   -udb password db  Update mysql db
 
 
-At first activation, please create the database using:
+At first activation, please create the database locally using:
 
  1. -cdict  creates the database and saved locally
  2. -capi   creates the ratings and saved locally
 
-These command shall take about 30 minutes due to the limitations imposed by the sleep intervals required for successful scrape & API operations.
+These commands shall take about 30 minutes each due to the limitations imposed by the sleep intervals required for successful scrape & API operations.
+
 
 Upstream the databases to a mysql database using:
 
@@ -43,8 +44,7 @@ Upstream the databases to a mysql database using:
 4. -udict   updates the mysql database with only the lastest changes updated locally to dfs_dict.p using -cdict command.
 
 
-
-* Be aware that every creation of the dictionary\api file takes ~30 minutes to complete due to limited requests
+(*) Be aware that every creation of the dictionary\api file takes ~30 minutes to complete due to limited requests
 per minutes allowed by the website.
 
 Enjoy!
