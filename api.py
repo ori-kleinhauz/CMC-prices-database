@@ -36,9 +36,9 @@ def get_api_data():
     for x, (key, value) in enumerate(tqdm(symbols.items())):
         querystring = {"symbol": value, "function": "CRYPTO_RATING"}
         if x % 2 == 0:
-            api_key = api_key1
+            api_key = config.API_key[0]
         else:
-            api_key = api_key2
+            api_key = config.API_key[1]
         url = f'https://www.alphavantage.co/query?function={querystring["function"]}&symbol=' \
               f'{querystring["symbol"]}&apikey={api_key}'
         headers = {'x-rapidapi-host': "alpha-vantage.p.rapidapi.com",

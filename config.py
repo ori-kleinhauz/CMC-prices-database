@@ -80,6 +80,8 @@ WB = 'wb'
 RB = 'rb'
 DICTIONARY_FILENAME = 'dfs_dict.p'
 API_FILENAME = 'api_data.p'
+API_key = ['YVL6KNC91W8WNDKE', 'WRZRQ8UPM5ZL95QV']
+
 
 # Parser
 ST = 'store_true'
