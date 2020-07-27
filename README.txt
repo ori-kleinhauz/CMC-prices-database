@@ -5,7 +5,7 @@ Yuval Herman
 Files in this repository:
 ms1.py - main script file
 api.py - connection with free api from https://www.alphavantage.com - getting community ratings on Coins. (requires personal free key added to config file)
-digital_currency_list.csv - contains intermidiate between scraped Coin names to API Coin names.
+digital_currency_list.csv - contains intermediate between scraped Coin names to API Coin names.
 MySQL_DB.py - class object for storing database locally and execute commands.
 config.py - constants, magic numbers, queries, name fields, sleep intervals.
 dfs_dict.p - scraped data kept in binary format.
@@ -35,16 +35,15 @@ At first activation, please create the database locally using:
  1. -cdict  creates the database and saved locally
  2. -capi   creates the ratings and saved locally
 
-These commands shall take about 30 minutes each due to the limitations imposed by the sleep intervals required for successful scrape & API operations.
+(*) These commands shall take about 15 minutes each due to the limitations imposed by the sleep intervals required for successful scraping & API operations.
 
+Add new currencies if any, to the local database using:
+
+ 3. -udict   updates the local database dfs_dict.p if the top 100 currencies list on the website was changed.
 
 Upstream the databases to a mysql database using:
 
-3. -udb     with added parameters (password, database desired name), creates or overwrite the database.
-4. -udict   updates the mysql database with only the lastest changes updated locally to dfs_dict.p using -cdict command.
+ 4. -udb     with added parameters (password, database desired name), creates or updates the database.
 
-
-(*) Be aware that every creation of the dictionary\api file takes ~30 minutes to complete due to limited requests
-per minutes allowed by the website.
 
 Enjoy!
