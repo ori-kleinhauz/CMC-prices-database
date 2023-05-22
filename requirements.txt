@@ -1,5 +1,5 @@
 PyMySQL==0.9.3
-requests==2.23.0
+requests==2.31.0
 tqdm==4.46.1
 pandas==0.25.3
 numpy==1.18.2
